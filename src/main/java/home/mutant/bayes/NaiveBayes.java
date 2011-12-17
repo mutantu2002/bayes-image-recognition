@@ -24,17 +24,21 @@ public class NaiveBayes
 	private Map<Short, Integer> featuresNotLikelihood = new HashMap<Short, Integer>();
 	private Integer priorSamples=0;
 	private Integer totalSamples=0;
+	private Integer totalClassFeatures=0;
+	private Integer totalNonClassFeatures=0;
 	
 	public void addClassSample(List<Short> features)
 	{
 		addToMap(features, featuresLikelihood);
 		priorSamples++;
 		totalSamples++;
+		totalClassFeatures+=features.size();
 	}
 	public void addNonClassSample(List<Short> features)
 	{
 		addToMap(features, featuresNotLikelihood);
 		totalSamples++;
+		totalNonClassFeatures+=features.size();
 	}
 	private void addToMap(List<Short> features, Map<Short, Integer> map)
 	{
@@ -45,7 +49,7 @@ public class NaiveBayes
 				map.put(feature, 0);
 			}
 			Integer count = map.get(feature);
-			map.put(feature, count);
+			map.put(feature, ++count);
 		}		
 	}
 	
@@ -59,12 +63,12 @@ public class NaiveBayes
 			
 			Integer counts = featuresLikelihood.get(feature);
 			counts = counts==null?0:counts;
-			likelihood = ((double)counts + K_LAPLACE_SMOOTHING)/DICTIONARY_SIZE_LAPLACE_SMOOTHING;
+			likelihood = ((double)counts + K_LAPLACE_SMOOTHING)/(totalClassFeatures + DICTIONARY_SIZE_LAPLACE_SMOOTHING);
 			classLikelihood*=likelihood;
 			
 			counts = featuresNotLikelihood.get(feature);
 			counts = counts==null?0:counts;
-			likelihood = ((double)counts + K_LAPLACE_SMOOTHING)/DICTIONARY_SIZE_LAPLACE_SMOOTHING;
+			likelihood = ((double)counts + K_LAPLACE_SMOOTHING)/(totalNonClassFeatures + DICTIONARY_SIZE_LAPLACE_SMOOTHING);
 			nonClassLikelihood*=likelihood;
 		}
 		
