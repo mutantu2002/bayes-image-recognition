@@ -49,4 +49,29 @@ public class NaiveBayes
 		}		
 	}
 	
+	public double getPosterior(List<Short> features)
+	{
+		double classLikelihood=1;
+		double nonClassLikelihood=1;
+		for (Short feature : features) 
+		{
+			double likelihood;
+			
+			Integer counts = featuresLikelihood.get(feature);
+			counts = counts==null?0:counts;
+			likelihood = ((double)counts + K_LAPLACE_SMOOTHING)/DICTIONARY_SIZE_LAPLACE_SMOOTHING;
+			classLikelihood*=likelihood;
+			
+			counts = featuresNotLikelihood.get(feature);
+			counts = counts==null?0:counts;
+			likelihood = ((double)counts + K_LAPLACE_SMOOTHING)/DICTIONARY_SIZE_LAPLACE_SMOOTHING;
+			nonClassLikelihood*=likelihood;
+		}
+		
+		double prior = (priorSamples+K_LAPLACE_SMOOTHING)/(2*K_LAPLACE_SMOOTHING+totalSamples);
+		classLikelihood*=prior;
+		nonClassLikelihood*=(totalSamples -priorSamples+K_LAPLACE_SMOOTHING)/(2*K_LAPLACE_SMOOTHING+totalSamples);
+		return classLikelihood/(classLikelihood+nonClassLikelihood);
+	}
+	
 }
