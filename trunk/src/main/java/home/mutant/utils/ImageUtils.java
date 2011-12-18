@@ -10,8 +10,10 @@ public class ImageUtils
 {
 	public static void readImage(String imagePath, float[] inValues) throws IOException 
 	{
-		BufferedImage image = ImageIO.read(new File(imagePath));
-		
+		readImage(ImageIO.read(new File(imagePath)),inValues);
+	}
+	public static void readImage(BufferedImage image, float[] inValues) throws IOException 
+	{
 		int offset=0;
 		for (int y = 0; y < image.getHeight(); y++) 
 		{
