@@ -1,6 +1,8 @@
 package home.mutant.utils;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -37,14 +39,22 @@ public class ImageUtils
 			}
 		}
 	}
-	public static BufferedImage horizontalflip(BufferedImage img) 
-	{  
-        int w = img.getWidth();  
-        int h = img.getHeight();  
-        BufferedImage dimg = new BufferedImage(w, h, img.getType());  
-        Graphics2D g = dimg.createGraphics();  
-        g.drawImage(img, 0, 0, w, h, w, 0, 0, h, null);  
-        g.dispose();  
-        return dimg;  
-    }	
+
+	public static BufferedImage setNewSize(BufferedImage originalImage, int x, int y)
+	{
+		BufferedImage resizedImage = new BufferedImage(x, y, originalImage.getType());
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(originalImage, 0, 0, originalImage.getWidth(), originalImage.getHeight(), null);
+		g.dispose();
+		return resizedImage;
+	}
+	
+	public static BufferedImage translateScale(BufferedImage originalImage, double x, double y, double scale)
+	{
+		AffineTransform tx = AffineTransform.getScaleInstance(scale, scale);
+        tx.translate(x+(1-scale)*originalImage.getWidth(), y+(1-scale)*originalImage.getHeight());
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        BufferedImage imageTrans= op.filter(originalImage, null);
+		return imageTrans;
+	}
 }

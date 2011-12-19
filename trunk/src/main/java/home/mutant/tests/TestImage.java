@@ -1,6 +1,7 @@
 package home.mutant.tests;
 
-import java.awt.Dimension;
+import home.mutant.utils.ImageUtils;
+
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -20,19 +21,15 @@ public class TestImage extends JFrame
 		
 		JPanel panel = new JPanel();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		BufferedImage image = ImageIO.read(this.getClass().getResourceAsStream("/class1.bmp"));
+		BufferedImage image = ImageIO.read(this.getClass().getResourceAsStream("/class5.bmp"));
 		setSize(300,200);
 		ImageIcon icon = new ImageIcon(image);
 		JLabel label = new JLabel();
 		label.setIcon(icon);
 		panel.add(label);
 		
-		AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-        tx.translate(-image.getWidth(null), 0);
-        AffineTransformOp op = new AffineTransformOp(tx, 
-                                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        BufferedImage imageTrans= op.filter(image, null);
-        
+        BufferedImage imageTrans= ImageUtils.translateScale(image, -10, 10, 1);
+        imageTrans = ImageUtils.setNewSize(imageTrans, image.getWidth(), image.getHeight());
         ImageIcon icon2 = new ImageIcon(imageTrans);
 		JLabel label2 = new JLabel();
 		label2.setIcon(icon2);
