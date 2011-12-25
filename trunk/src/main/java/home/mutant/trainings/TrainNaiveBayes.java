@@ -19,7 +19,7 @@ public class TrainNaiveBayes
 
 	public void train() throws Exception
 	{
-		for (int i=1;i<7;i++)
+		for (int i=1;i<8;i++)
 		{
 			String resourceClass = "/class" +i + ".bmp";
 			String resourceNonClass = "/nonclass" +i + ".bmp";

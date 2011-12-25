@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class NaiveBayes 
 {
-	private static final double K_LAPLACE_SMOOTHING = 1;
+	private static final double K_LAPLACE_SMOOTHING = 5;
 	private static final double DICTIONARY_SIZE_LAPLACE_SMOOTHING = 65536;
 	/**
 	 * How many features had appears for the class and for the non-class
@@ -62,12 +62,12 @@ public class NaiveBayes
 			
 			Integer counts = featuresLikelihood.get(feature);
 			counts = counts==null?0:counts;
-			likelihood = ((double)counts + K_LAPLACE_SMOOTHING)/(totalClassFeatures + DICTIONARY_SIZE_LAPLACE_SMOOTHING);
+			likelihood = ((double)counts + K_LAPLACE_SMOOTHING)/(totalClassFeatures + K_LAPLACE_SMOOTHING*DICTIONARY_SIZE_LAPLACE_SMOOTHING);
 			
 			counts = featuresNotLikelihood.get(feature);
 			counts = counts==null?0:counts;
 			nonClassoverClass *= ((double)counts + K_LAPLACE_SMOOTHING)/
-								(totalNonClassFeatures + DICTIONARY_SIZE_LAPLACE_SMOOTHING)/likelihood;
+								(totalNonClassFeatures + K_LAPLACE_SMOOTHING*DICTIONARY_SIZE_LAPLACE_SMOOTHING)/likelihood;
 		}
 		
 		double prior = (priorSamples+K_LAPLACE_SMOOTHING)/(2*K_LAPLACE_SMOOTHING+totalSamples);
