@@ -28,7 +28,7 @@ public class ImageUtilsTest
 		List<Integer> features = ImageUtils.getFeatures(image, 200);
 		assertNotNull(features);
 		assertEquals(10, features.get(0));
-		assertEquals(4, (features.get(1)&0xFF));
+		assertEquals(5, (features.get(1)&0xFF));
 		assertEquals(1, (features.get(14)&0xFF));
 		assertEquals(2, (features.get(features.size()-1)&0xFF));
 	}

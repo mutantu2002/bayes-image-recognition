@@ -15,8 +15,8 @@ import java.util.Map;
  */
 public class NaiveBayes 
 {
-	private static final double K_LAPLACE_SMOOTHING = 5;
-	private static final double DICTIONARY_SIZE_LAPLACE_SMOOTHING = 65536;
+	public double kSmoothing = 1;
+	public double dictSizeSmoothing = 65536;
 	/**
 	 * How many features had appears for the class and for the non-class
 	 */
@@ -27,6 +27,15 @@ public class NaiveBayes
 	private Integer totalClassFeatures=0;
 	private Integer totalNonClassFeatures=0;
 	
+	public NaiveBayes() 
+	{
+	}
+	public NaiveBayes(double kSmoothing, double dictSizeSmoothing) 
+	{
+		super();
+		this.kSmoothing = kSmoothing;
+		this.dictSizeSmoothing = dictSizeSmoothing;
+	}
 	public void addClassSample(List<Integer> features)
 	{
 		addToMap(features, featuresLikelihood);
@@ -62,16 +71,16 @@ public class NaiveBayes
 			
 			Integer counts = featuresLikelihood.get(feature);
 			counts = counts==null?0:counts;
-			likelihood = ((double)counts + K_LAPLACE_SMOOTHING)/(totalClassFeatures + K_LAPLACE_SMOOTHING*DICTIONARY_SIZE_LAPLACE_SMOOTHING);
+			likelihood = ((double)counts + kSmoothing)/(totalClassFeatures + kSmoothing*dictSizeSmoothing);
 			
 			counts = featuresNotLikelihood.get(feature);
 			counts = counts==null?0:counts;
-			nonClassoverClass *= ((double)counts + K_LAPLACE_SMOOTHING)/
-								(totalNonClassFeatures + K_LAPLACE_SMOOTHING*DICTIONARY_SIZE_LAPLACE_SMOOTHING)/likelihood;
+			nonClassoverClass *= ((double)counts + kSmoothing)/
+								(totalNonClassFeatures + kSmoothing*dictSizeSmoothing)/likelihood;
 		}
 		
-		double prior = (priorSamples+K_LAPLACE_SMOOTHING)/(2*K_LAPLACE_SMOOTHING+totalSamples);
-		nonClassoverClass*=(totalSamples -priorSamples+K_LAPLACE_SMOOTHING)/(2*K_LAPLACE_SMOOTHING+totalSamples);
+		double prior = (priorSamples+kSmoothing)/(2*kSmoothing+totalSamples);
+		nonClassoverClass*=(totalSamples -priorSamples+kSmoothing)/(2*kSmoothing+totalSamples);
 		nonClassoverClass/=prior;
 		return 1./(1+nonClassoverClass);
 	}
