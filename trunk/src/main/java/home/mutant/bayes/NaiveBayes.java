@@ -18,7 +18,7 @@ public class NaiveBayes
 	public double kSmoothing = 1;
 	public double dictSizeSmoothing = 65536;
 	/**
-	 * How many features had appears for the class and for the non-class
+	 * How many features had appeared for the class and for the non-class
 	 */
 	private Map<Integer, Integer> featuresLikelihood = new HashMap<Integer, Integer>();
 	private Map<Integer, Integer> featuresNotLikelihood = new HashMap<Integer, Integer>();
