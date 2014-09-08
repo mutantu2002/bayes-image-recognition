@@ -26,11 +26,22 @@ public class TrainNaiveBayes
 			trainOneImage(ImageIO.read(this.getClass().getResourceAsStream(resourceClass)), true);
 			trainOneImage(ImageIO.read(this.getClass().getResourceAsStream(resourceNonClass)), false);
 		}
-		System.out.println(bayes.getPosterior(ImageUtils.getFeatures(ImageIO.read(this.getClass().getResourceAsStream("/class7.bmp")), 200)));
-		System.out.println(bayes.getPosterior(ImageUtils.getFeatures(ImageIO.read(this.getClass().getResourceAsStream("/nonclass7.bmp")), 200)));
 		
-		System.out.println(bayes.getPosterior(ImageUtils.getFeatures(ImageIO.read(this.getClass().getResourceAsStream("/class8.bmp")), 200)));
-
+		System.out.println("CLASS:");
+		for (int i=1;i<8;i++)
+		{
+			System.out.println(bayes.getPosterior(ImageUtils.getFeatures(ImageIO.read(this.getClass().getResourceAsStream("/class" +i + ".bmp")), 200)));
+		}
+		System.out.println("NONCLASS:");
+		for (int i=1;i<8;i++)
+		{
+			System.out.println(bayes.getPosterior(ImageUtils.getFeatures(ImageIO.read(this.getClass().getResourceAsStream("/nonclass" +i + ".bmp")), 200)));
+		}
+		System.out.println("TEST:");
+		for (int i=1;i<4;i++)
+		{
+			System.out.println(bayes.getPosterior(ImageUtils.getFeatures(ImageIO.read(this.getClass().getResourceAsStream("/test" +i + ".bmp")), 200)));
+		}
 	}
 	private void trainOneImage(BufferedImage image, boolean inClass) throws Exception
 	{
