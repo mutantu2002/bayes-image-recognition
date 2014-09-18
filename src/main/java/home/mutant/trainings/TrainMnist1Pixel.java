@@ -6,9 +6,10 @@ import home.mutant.deep.utils.ImageUtils;
 import home.mutant.deep.utils.ImageUtils.Style;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class TrainMnistNaiveBayes
+public class TrainMnist1Pixel
 {
 	List<Image> trainImages = new ArrayList<Image>();
 	List<Integer> trainLabels  = new ArrayList<Integer>();
@@ -21,14 +22,14 @@ public class TrainMnistNaiveBayes
 	
 	public static void main(String[] args) throws Exception
 	{
-		new TrainMnistNaiveBayes().train();
+		new TrainMnist1Pixel().train();
 	}
 
 	private void train() throws Exception
 	{
 		for (int i=0;i<10;i++)
 		{
-			bayes.add(new NaiveBayes(3,10000));
+			bayes.add(new NaiveBayes(21,10000));
 		}
 
 		ImageUtils.loadImages(trainImages, testImages, trainLabels, testLabels, style);
@@ -58,7 +59,7 @@ public class TrainMnistNaiveBayes
 			if (label==prediction.get(0))
 			{
 				ok++;
-				System.out.println("Image is "+label);
+				//System.out.println("Image is "+label);
 			}
 			else
 			{
@@ -88,22 +89,18 @@ public class TrainMnistNaiveBayes
 	
 	List<Integer> getResult(List<Integer> features)
 	{
-		List<Integer> res = new ArrayList<Integer>();
-		double max = Double.MIN_VALUE;
-		int maxIndex = -1;
-		int secondMax = -1;
+		List<Double> posterior = new ArrayList<Double>();
+		List<Double> posteriorTmp = new ArrayList<Double>();
 		for (int i=0;i<10;i++) 
 		{
-			double posterior = bayes.get(i).getPosterior(features);
-			if (posterior>max)
-			{
-				max = posterior;
-				secondMax = maxIndex;
-				maxIndex = i;
-			}
+			Double post = bayes.get(i).getPosterior(features);
+			posterior.add(post);
+			posteriorTmp.add(post);
 		}
-		res.add(maxIndex);
-		res.add(secondMax);
+		Collections.sort(posterior);
+		List<Integer> res = new ArrayList<Integer>();
+		res.add(posteriorTmp.indexOf(posterior.get(9)));
+		res.add(posteriorTmp.indexOf(posterior.get(8)));
 		return res;
 	}
 }
