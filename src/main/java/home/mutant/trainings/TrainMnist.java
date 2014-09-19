@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TrainMnist1Pixel
+public abstract class TrainMnist
 {
 	List<Image> trainImages = new ArrayList<Image>();
 	List<Integer> trainLabels  = new ArrayList<Integer>();
@@ -19,13 +19,10 @@ public class TrainMnist1Pixel
 	public Style style=Style.BW;
 	
 	private List<NaiveBayes> bayes = new ArrayList<NaiveBayes>();
-	
-	public static void main(String[] args) throws Exception
-	{
-		new TrainMnist1Pixel().train();
-	}
+		
+	public abstract List<Integer> getFeatures(Image image);
 
-	private void train() throws Exception
+	public void train() throws Exception
 	{
 		for (int i=0;i<10;i++)
 		{
@@ -68,25 +65,7 @@ public class TrainMnist1Pixel
 		}
 		System.out.println("Error rate "+(total-ok)*100./total);
 	}
-	
-	List<Integer> getFeatures(Image image)
-	{
-		List<Integer> features = new ArrayList<Integer>();
-		byte[] oneDimension = image.getDataOneDimensional();
-		for (int i = 0; i < oneDimension.length; i++)
-		{
-			if (oneDimension[i]!=0)
-			{
-				features.add(i);
-			}
-			else
-			{
-				features.add(-1*i);
-			}
-		}
-		return features;
-	}
-	
+
 	List<Integer> getResult(List<Integer> features)
 	{
 		List<Double> posterior = new ArrayList<Double>();
