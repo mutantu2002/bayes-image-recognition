@@ -36,14 +36,14 @@ public class NaiveBayes
 		this.kSmoothing = kSmoothing;
 		this.dictSizeSmoothing = dictSizeSmoothing;
 	}
-	public void addClassSample(List<Integer> features)
+	public synchronized void addClassSample(List<Integer> features)
 	{
 		addToMap(features, featuresLikelihood);
 		priorSamples++;
 		totalSamples++;
 		totalClassFeatures+=features.size();
 	}
-	public void addNonClassSample(List<Integer> features)
+	public synchronized void  addNonClassSample(List<Integer> features)
 	{
 		addToMap(features, featuresNotLikelihood);
 		totalSamples++;
@@ -51,17 +51,14 @@ public class NaiveBayes
 	}
 	private void addToMap(List<Integer> features, Map<Integer, Integer> map)
 	{
-		synchronized(map)
+		for (Integer feature : features) 
 		{
-			for (Integer feature : features) 
+			if (map.get(feature)==null)
 			{
-				if (map.get(feature)==null)
-				{
-					map.put(feature, 0);
-				}
-				Integer count = map.get(feature);
-				map.put(feature, ++count);
+				map.put(feature, 0);
 			}
+			Integer count = map.get(feature);
+			map.put(feature, ++count);
 		}
 	}
 

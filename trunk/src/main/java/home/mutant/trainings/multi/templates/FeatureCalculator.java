@@ -1,4 +1,4 @@
-package home.mutant.trainings.multi;
+package home.mutant.trainings.multi.templates;
 
 import home.mutant.bayes.NaiveBayes;
 import home.mutant.deep.ui.Image;
@@ -6,21 +6,22 @@ import home.mutant.deep.ui.Image;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public abstract class FeatureCalculator implements Runnable 
+public class FeatureCalculator implements Runnable 
 {
 	public ConcurrentLinkedQueue<Image> imagesQueue = new ConcurrentLinkedQueue<Image>();
 	
-	public FeatureCalculator(List<NaiveBayes> bayes, int output) 
+	public FeatureCalculator(List<NaiveBayes> bayes, int output, Featurable featurable) 
 	{
 		super();
 		this.bayes = bayes;
 		this.output = output;
+		this.featurable = featurable;
 	}
 
-	List<NaiveBayes> bayes;
-	int output;
+	protected List<NaiveBayes> bayes;
+	protected int output;
 	
-	public abstract List<Integer> getFeatures(Image image);
+	protected Featurable featurable;
 	
 	@Override
 	public void run()
@@ -34,7 +35,7 @@ public abstract class FeatureCalculator implements Runnable
 				System.out.println("OUT "+output);
 				break;
 			}
-			List<Integer> features = getFeatures(image);
+			List<Integer> features = featurable.getFeatures(image);
 			processFeatures(features);
 		}
 	}

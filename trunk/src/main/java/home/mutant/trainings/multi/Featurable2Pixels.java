@@ -1,16 +1,13 @@
-package home.mutant.trainings.single;
+package home.mutant.trainings.multi;
 
 import home.mutant.deep.ui.Image;
+import home.mutant.trainings.multi.templates.Featurable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrainMnist2Pixels extends TrainMnist
+public class Featurable2Pixels implements  Featurable
 {
-	public static void main(String[] args) throws Exception
-	{
-		new TrainMnist2Pixels().train();
-	}
 	@Override
 	public List<Integer> getFeatures(Image image)
 	{
@@ -28,5 +25,4 @@ public class TrainMnist2Pixels extends TrainMnist
 		}
 		return features;
 	}
-
 }
