@@ -8,7 +8,7 @@ import home.mutant.deep.utils.ImageUtils.Style;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrainMnistMultiThread
+public abstract class TrainMnistMultiThread
 {
 	List<Image> trainImages = new ArrayList<Image>();
 	List<Integer> trainLabels  = new ArrayList<Integer>();
@@ -19,10 +19,8 @@ public class TrainMnistMultiThread
 	
 	private List<NaiveBayes> bayes = new ArrayList<NaiveBayes>();
 
-	public static void main(String[] args) throws Exception
-	{
-		new TrainMnistMultiThread().train();
-	}
+	public abstract List<FeatureCalculator> getFeatureCalculators();
+	public abstract List<PosteriorCalculator> getPosteriorCalculators();
 	
 	public void train() throws Exception
 	{
@@ -30,11 +28,7 @@ public class TrainMnistMultiThread
 		{
 			bayes.add(new NaiveBayes(20,10000));
 		}
-		List<FeatureCalculator2Pixels> calculators = new ArrayList<FeatureCalculator2Pixels>();
-		for (int i=0;i<10;i++)
-		{
-			calculators.add(new FeatureCalculator2Pixels(bayes,i));
-		}		
+		List<FeatureCalculator> calculators = getFeatureCalculators();
 		ImageUtils.loadImages(trainImages, testImages, trainLabels, testLabels, style);
 		for (int index = 0; index<60000; index++)
 		{
@@ -56,11 +50,7 @@ public class TrainMnistMultiThread
 		}
 
 		System.out.println("Processing posteriors...");
-		List<PosteriorCalculator2Pixels> posteriors = new ArrayList<PosteriorCalculator2Pixels>();
-		for (int i=0;i<10;i++)
-		{
-			posteriors.add(new PosteriorCalculator2Pixels(bayes,i));
-		}		
+		List<PosteriorCalculator> posteriors = getPosteriorCalculators();
 		for (int index = 0; index<10000; index++)
 		{
 			int currentBayesIndex = testLabels.get(index);
@@ -90,6 +80,4 @@ public class TrainMnistMultiThread
 		
 		System.out.println("Error rate "+(total-ok)*100./total);
 	}
-
-
 }

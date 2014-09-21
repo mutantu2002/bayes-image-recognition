@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PosteriorCalculator2Pixels extends FeatureCalculator2Pixels 
+public abstract class PosteriorCalculator extends FeatureCalculator
 {
 	public int total=0;
 	public int ok=0;
 	
-	public PosteriorCalculator2Pixels(List<NaiveBayes> bayes, int output) 
+	public PosteriorCalculator(List<NaiveBayes> bayes, int output) 
 	{
 		super(bayes, output);
 	}
