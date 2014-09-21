@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public abstract class FeatureCalculator implements Runnable 
 {
 	public ConcurrentLinkedQueue<Image> imagesQueue = new ConcurrentLinkedQueue<Image>();
+	
 	public FeatureCalculator(List<NaiveBayes> bayes, int output) 
 	{
 		super();
