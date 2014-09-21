@@ -1,4 +1,4 @@
-package home.mutant.trainings.multi;
+package home.mutant.trainings.multi.templates;
 
 import home.mutant.bayes.NaiveBayes;
 import home.mutant.deep.ui.Image;
@@ -17,10 +17,9 @@ public abstract class TrainMnistMultiThread
 	List<Integer> testLabels  = new ArrayList<Integer>();
 	public Style style=Style.BW;
 	
-	private List<NaiveBayes> bayes = new ArrayList<NaiveBayes>();
+	protected List<NaiveBayes> bayes = new ArrayList<NaiveBayes>();
 
-	public abstract List<FeatureCalculator> getFeatureCalculators();
-	public abstract List<PosteriorCalculator> getPosteriorCalculators();
+	public abstract Featurable getFeaturable();
 	
 	public void train() throws Exception
 	{
@@ -79,5 +78,25 @@ public abstract class TrainMnistMultiThread
 		}
 		
 		System.out.println("Error rate "+(total-ok)*100./total);
+	}
+
+	private List<PosteriorCalculator> getPosteriorCalculators() 
+	{
+		List<PosteriorCalculator> calcs = new ArrayList<PosteriorCalculator>();
+		for (int i=0; i<10;i++)
+		{
+			calcs.add(new PosteriorCalculator(bayes, i , getFeaturable()));
+		}
+		return calcs;
+	}
+
+	private List<FeatureCalculator> getFeatureCalculators() 
+	{
+		List<FeatureCalculator> calcs = new ArrayList<FeatureCalculator>();
+		for (int i=0; i<10;i++)
+		{
+			calcs.add(new FeatureCalculator(bayes, i , getFeaturable()));
+		}
+		return calcs;
 	}
 }

@@ -1,4 +1,4 @@
-package home.mutant.trainings.multi;
+package home.mutant.trainings.multi.templates;
 
 import home.mutant.bayes.NaiveBayes;
 
@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class PosteriorCalculator extends FeatureCalculator
+public class PosteriorCalculator extends FeatureCalculator
 {
 	public int total=0;
 	public int ok=0;
 	
-	public PosteriorCalculator(List<NaiveBayes> bayes, int output) 
+	public PosteriorCalculator(List<NaiveBayes> bayes, int output, Featurable featurable) 
 	{
-		super(bayes, output);
+		super(bayes, output, featurable);
 	}
 	public void processFeatures(List<Integer> features)
 	{
