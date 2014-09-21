@@ -22,10 +22,10 @@ public class TrainMnist1Pixel extends TrainMnist
 			{
 				features.add(i);
 			}
-			else
-			{
-				features.add(-1*i);
-			}
+//			else
+//			{
+//				features.add(-1*i);
+//			}
 		}
 		return features;
 	}

@@ -5,24 +5,28 @@ import home.mutant.deep.ui.Image;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrainMnist2Pixels extends TrainMnist
+public class TrainMnistSegments2Pixels extends TrainMnist
 {
+	static final int SEGMENTS =10;
 	public static void main(String[] args) throws Exception
 	{
-		new TrainMnist2Pixels().train();
+		new TrainMnistSegments2Pixels().train();
 	}
 	@Override
 	public List<Integer> getFeatures(Image image)
 	{
 		List<Integer> features = new ArrayList<Integer>();
 		byte[] oneDimension = image.getDataOneDimensional();
-		for (int i = 0; i < oneDimension.length; i+=6)
+		for (int i = 0; i < oneDimension.length-SEGMENTS; i++)
 		{
-			for (int j = 0; j < oneDimension.length; j+=6)
+			if (oneDimension[i]!=0)
 			{
-				if (oneDimension[i]!=0 && oneDimension[j]!=0)
+				for (int j = 0; j<=SEGMENTS; j+=1)
 				{
-					features.add(i*oneDimension.length+j);
+					if (oneDimension[i+j]!=0)
+					{
+						features.add(oneDimension.length*i+j);
+					}
 				}
 			}
 		}
