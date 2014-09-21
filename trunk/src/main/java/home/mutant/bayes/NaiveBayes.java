@@ -51,15 +51,18 @@ public class NaiveBayes
 	}
 	private void addToMap(List<Integer> features, Map<Integer, Integer> map)
 	{
-		for (Integer feature : features) 
+		synchronized(map)
 		{
-			if (map.get(feature)==null)
+			for (Integer feature : features) 
 			{
-				map.put(feature, 0);
+				if (map.get(feature)==null)
+				{
+					map.put(feature, 0);
+				}
+				Integer count = map.get(feature);
+				map.put(feature, ++count);
 			}
-			Integer count = map.get(feature);
-			map.put(feature, ++count);
-		}		
+		}
 	}
 
 	public double getPosterior(List<Integer> features)
@@ -83,5 +86,27 @@ public class NaiveBayes
 		nonClassoverClass*=(totalSamples -priorSamples+kSmoothing)/(2*kSmoothing+totalSamples);
 		nonClassoverClass/=prior;
 		return 1./(1+nonClassoverClass);
+	}
+	public double getLogPosterior(List<Integer> features)
+	{
+		double likelihood=0;
+		for (Integer feature : features) 
+		{
+			Integer counts = featuresLikelihood.get(feature);
+			counts = counts==null?(int)0:counts;
+			likelihood+=Math.log(((double)(counts+kSmoothing))/(totalClassFeatures + kSmoothing*dictSizeSmoothing));
+		}
+		return Math.log((double)priorSamples/(double)totalSamples)+likelihood;
+	}
+	public double getNotLogPosterior(List<Integer> features)
+	{
+		double likelihood=0;
+		for (Integer feature : features) 
+		{
+			Integer counts = featuresNotLikelihood.get(feature);
+			counts = counts==null?(int)0:counts;
+			likelihood+=Math.log(((double)(counts+kSmoothing))/(totalNonClassFeatures + kSmoothing*dictSizeSmoothing));
+		}
+		return Math.log((double)(totalSamples-priorSamples)/(double)totalSamples)+likelihood;
 	}
 }

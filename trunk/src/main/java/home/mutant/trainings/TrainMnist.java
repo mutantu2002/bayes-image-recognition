@@ -26,7 +26,7 @@ public abstract class TrainMnist
 	{
 		for (int i=0;i<10;i++)
 		{
-			bayes.add(new NaiveBayes(21,10000));
+			bayes.add(new NaiveBayes(20,10000));
 		}
 
 		ImageUtils.loadImages(trainImages, testImages, trainLabels, testLabels, style);
@@ -56,12 +56,11 @@ public abstract class TrainMnist
 			if (label==prediction.get(0))
 			{
 				ok++;
-				//System.out.println("Image is "+label);
 			}
-			else
-			{
-				System.out.println("Image is "+label+", prediction is "+prediction.get(0)+", second is "+prediction.get(1));
-			}
+//			else
+//			{
+//				System.out.println("Image is "+label+", prediction is "+prediction.get(0)+", second is "+prediction.get(1));
+//			}
 		}
 		System.out.println("Error rate "+(total-ok)*100./total);
 	}
@@ -72,9 +71,10 @@ public abstract class TrainMnist
 		List<Double> posteriorTmp = new ArrayList<Double>();
 		for (int i=0;i<10;i++) 
 		{
-			Double post = bayes.get(i).getPosterior(features);
-			posterior.add(post);
-			posteriorTmp.add(post);
+			Double post = bayes.get(i).getLogPosterior(features);
+			Double notPost = bayes.get(i).getNotLogPosterior(features);
+			posterior.add(post-notPost);
+			posteriorTmp.add(post-notPost);
 		}
 		Collections.sort(posterior);
 		List<Integer> res = new ArrayList<Integer>();
