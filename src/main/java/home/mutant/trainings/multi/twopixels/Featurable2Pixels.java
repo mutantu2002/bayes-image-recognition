@@ -1,4 +1,4 @@
-package home.mutant.trainings.multi;
+package home.mutant.trainings.multi.twopixels;
 
 import home.mutant.deep.ui.Image;
 import home.mutant.trainings.multi.templates.Featurable;
