@@ -6,7 +6,7 @@ import home.mutant.trainings.multi.templates.Featurable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeaturableSegments implements  Featurable
+public class FeaturableSegments2Pixels implements  Featurable
 {
 	static final int SEGMENTS =100;
 	static final int STEP_SEGMENTS = 1;
