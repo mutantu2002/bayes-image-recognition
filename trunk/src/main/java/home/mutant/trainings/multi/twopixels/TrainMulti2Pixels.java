@@ -1,14 +1,14 @@
-package home.mutant.trainings.multi;
+package home.mutant.trainings.multi.twopixels;
 
 import home.mutant.trainings.multi.templates.Featurable;
 import home.mutant.trainings.multi.templates.TrainMnistMultiThread;
 
 
-public class TrainMultiSegments2Pixels extends TrainMnistMultiThread
+public class TrainMulti2Pixels extends TrainMnistMultiThread
 {
 	public static void main(String[] args) throws Exception
 	{
-		new TrainMultiSegments2Pixels().train();
+		new TrainMulti2Pixels().train();
 	}
 	Featurable featurable = null;
 	@Override
@@ -16,7 +16,7 @@ public class TrainMultiSegments2Pixels extends TrainMnistMultiThread
 	{
 		if (featurable == null)
 		{
-			featurable = new FeaturableSegments2Pixels();
+			featurable = new Featurable2Pixels();
 		}
 		return featurable;
 	}
