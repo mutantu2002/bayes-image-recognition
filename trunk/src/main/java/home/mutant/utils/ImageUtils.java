@@ -64,6 +64,16 @@ public class ImageUtils
 		return imageTrans;
 	}
 	
+	public static BufferedImage rotate(BufferedImage originalImage, double theta)
+	{
+		AffineTransform tx =  new AffineTransform();
+        tx.rotate(theta,originalImage.getWidth()/2, originalImage.getHeight()/2);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+        BufferedImage imageTrans = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), originalImage.getType());
+        imageTrans= op.filter(originalImage, imageTrans);
+		return imageTrans;
+	}
+	
 	public static List<Integer> getFeatures(BufferedImage image, int featuresNumber)
 	{
 		List<Integer> features = new ArrayList<Integer>();
