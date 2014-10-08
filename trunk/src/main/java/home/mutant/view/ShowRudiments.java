@@ -16,7 +16,7 @@ public class ShowRudiments
 	public static void main(String[] args) throws Exception
 	{
 		ResultFrame frame = new ResultFrame(1200, 600);
-		BufferedImage resImage = ImageIO.read(ShowRudiments.class.getResourceAsStream("/rudiment1.bmp"));
+		BufferedImage resImage = ImageIO.read(ShowRudiments.class.getResourceAsStream("/rudiment2.bmp"));
 		List<Image> list = new ArrayList<Image>();
 		for (double theta = 0; theta<2*Math.PI;theta+=Math.PI/20)
 		{

@@ -29,7 +29,7 @@ public abstract class TrainMnistMultiThread
 		}
 		List<FeatureCalculator> calculators = getFeatureCalculators();
 		ImageUtils.loadImages(trainImages, testImages, trainLabels, testLabels, style);
-		for (int index = 0; index<60000; index++)
+		for (int index = 0; index<6000; index++)
 		{
 			int currentBayesIndex = trainLabels.get(index);
 			calculators.get(currentBayesIndex).imagesQueue.add(trainImages.get(index));
@@ -50,7 +50,7 @@ public abstract class TrainMnistMultiThread
 
 		System.out.println("Processing posteriors...");
 		List<PosteriorCalculator> posteriors = getPosteriorCalculators();
-		for (int index = 0; index<10000; index++)
+		for (int index = 0; index<1000; index++)
 		{
 			int currentBayesIndex = testLabels.get(index);
 			posteriors.get(currentBayesIndex).imagesQueue.add(testImages.get(index));
