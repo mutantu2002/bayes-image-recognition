@@ -19,7 +19,27 @@ public abstract class TrainMnistMultiThread
 	
 	protected List<NaiveBayes> bayes = new ArrayList<NaiveBayes>();
 
+	private int trainListSize;
+	private int testListSize;
+
 	public abstract Featurable getFeaturable();
+	
+	public TrainMnistMultiThread()
+	{
+	}
+	public TrainMnistMultiThread(int trainListSize, int testListSize)
+	{
+		if (trainListSize>60000)
+		{
+			trainListSize = 60000;
+		}
+		if (testListSize>10000)
+		{
+			testListSize = 10000;
+		}
+		this.trainListSize = trainListSize;
+		this.testListSize = testListSize;
+	}
 	
 	public void train() throws Exception
 	{
@@ -29,7 +49,7 @@ public abstract class TrainMnistMultiThread
 		}
 		List<FeatureCalculator> calculators = getFeatureCalculators();
 		ImageUtils.loadImages(trainImages, testImages, trainLabels, testLabels, style);
-		for (int index = 0; index<6000; index++)
+		for (int index = 0; index<trainListSize; index++)
 		{
 			int currentBayesIndex = trainLabels.get(index);
 			calculators.get(currentBayesIndex).imagesQueue.add(trainImages.get(index));
@@ -50,7 +70,7 @@ public abstract class TrainMnistMultiThread
 
 		System.out.println("Processing posteriors...");
 		List<PosteriorCalculator> posteriors = getPosteriorCalculators();
-		for (int index = 0; index<1000; index++)
+		for (int index = 0; index<testListSize; index++)
 		{
 			int currentBayesIndex = testLabels.get(index);
 			posteriors.get(currentBayesIndex).imagesQueue.add(testImages.get(index));
