@@ -1,5 +1,7 @@
 package home.mutant.bayes;
 
+import java.util.List;
+
 /**
  * This kind of neuron have several numeric entries and a binary output
  * Retains the statistics online - if the neuron fires (randomly by following the probability for this event in that moment) 
@@ -9,5 +11,25 @@ package home.mutant.bayes;
  */
 public class BayesNeuron
 {
-
+	NaiveBayes bayes;
+	public BayesNeuron(int size)
+	{
+		bayes = new NaiveBayes(20, size);
+	}
+	
+	public int output(List<Integer> input)
+	{
+		double p = bayes.getPosterior(input);
+		System.out.println(p);
+		int res = Math.random()<p?1:0;
+		if (res == 0)
+		{
+			bayes.addNonClassSample(input);
+		}
+		else
+		{
+			bayes.addClassSample(input);
+		}
+		return res;
+	}
 }
