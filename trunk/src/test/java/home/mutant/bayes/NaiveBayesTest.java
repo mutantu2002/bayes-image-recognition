@@ -19,6 +19,7 @@ public class NaiveBayesTest
 		assertEquals(0.7999975586012006, bayes.getPosterior(features), 0.00000001);
 		bayes.addNonClassSample(features);
 		assertEquals( 0.5, bayes.getPosterior(features));
+		assertEquals( 0.5, bayes.getPosteriorWithLog(features));
 	}
 	
 	@Test
@@ -29,6 +30,7 @@ public class NaiveBayesTest
 		features.add(33);
 		bayes.addNonClassSample(features);
 		assertEquals(1-0.7999975586012006, bayes.getPosterior(features), 0.00000001);
+		assertEquals(1-0.7999975586012006, bayes.getPosteriorWithLog(features), 0.00000001);
 	}
 	
 	@Test
@@ -42,6 +44,7 @@ public class NaiveBayesTest
 		
 		features.remove(1);
 		assertEquals(0.7999951172, bayes.getPosterior(features), 0.00000001);
+		assertEquals(0.7999951172, bayes.getPosteriorWithLog(features), 0.00000001);
 	}
 	@Test
 	public void testPosteriorClassManyNoise()
@@ -60,6 +63,7 @@ public class NaiveBayesTest
 		features.clear();
 		features.add(33);
 		assertEquals(0.799985351, bayes.getPosterior(features), 0.00000001);
+		assertEquals(0.799985351, bayes.getPosteriorWithLog(features), 0.00000001);
 	}
 	@Test
 	public void testPosteriorManySamplesOneFeature()
@@ -75,5 +79,6 @@ public class NaiveBayesTest
 		features.add(33);
 		bayes.addClassSample(features);
 		assertEquals(0.99998633, bayes.getPosterior(features), 0.00000001);
+		assertEquals(0.99998633, bayes.getPosteriorWithLog(features), 0.00000001);
 	}
 }
