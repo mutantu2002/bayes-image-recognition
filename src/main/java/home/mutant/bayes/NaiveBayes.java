@@ -67,11 +67,9 @@ public class NaiveBayes
 		double nonClassoverClass=1;
 		for (Integer feature : features) 
 		{
-			double likelihood;
-			
 			Integer counts = featuresLikelihood.get(feature);
 			counts = counts==null?0:counts;
-			likelihood = ((double)counts + kSmoothing)/(totalClassFeatures + kSmoothing*dictSizeSmoothing);
+			double likelihood = ((double)counts + kSmoothing)/(totalClassFeatures + kSmoothing*dictSizeSmoothing);
 			
 			counts = featuresNotLikelihood.get(feature);
 			counts = counts==null?0:counts;
@@ -80,11 +78,11 @@ public class NaiveBayes
 		}
 		
 		double prior = (priorSamples+kSmoothing)/(2*kSmoothing+totalSamples);
-		nonClassoverClass*=(totalSamples -priorSamples+kSmoothing)/(2*kSmoothing+totalSamples);
+		nonClassoverClass*=(totalSamples-priorSamples+kSmoothing)/(2*kSmoothing+totalSamples);
 		nonClassoverClass/=prior;
 		return 1./(1+nonClassoverClass);
 	}
-	public double getLogPosterior(List<Integer> features)
+	public double getUnnormalizedLogPosterior(List<Integer> features)
 	{
 		double likelihood=0;
 		for (Integer feature : features) 
@@ -93,9 +91,9 @@ public class NaiveBayes
 			counts = counts==null?(int)0:counts;
 			likelihood+=Math.log(((double)(counts+kSmoothing))/(totalClassFeatures + kSmoothing*dictSizeSmoothing));
 		}
-		return Math.log((double)priorSamples/(double)totalSamples)+likelihood;
+		return Math.log((double)(priorSamples+kSmoothing)/(double)(2*kSmoothing+totalSamples))+likelihood;
 	}
-	public double getNotLogPosterior(List<Integer> features)
+	public double getUnnormalizedNotLogPosterior(List<Integer> features)
 	{
 		double likelihood=0;
 		for (Integer feature : features) 
@@ -104,6 +102,14 @@ public class NaiveBayes
 			counts = counts==null?(int)0:counts;
 			likelihood+=Math.log(((double)(counts+kSmoothing))/(totalNonClassFeatures + kSmoothing*dictSizeSmoothing));
 		}
-		return Math.log((double)(totalSamples-priorSamples)/(double)totalSamples)+likelihood;
+		return Math.log((double)(totalSamples-priorSamples+kSmoothing)/(double)(2*kSmoothing+totalSamples))+likelihood;
 	}
+	
+	public double getPosteriorWithLog(List<Integer> features)
+	{
+		double p =  getUnnormalizedNotLogPosterior(features) - getUnnormalizedLogPosterior(features);
+		p = Math.exp(p);
+		return 1/(1+p);
+	}
+	
 }

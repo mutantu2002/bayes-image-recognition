@@ -71,8 +71,8 @@ public abstract class TrainMnist
 		List<Double> posteriorTmp = new ArrayList<Double>();
 		for (int i=0;i<10;i++) 
 		{
-			Double post = bayes.get(i).getLogPosterior(features);
-			Double notPost = bayes.get(i).getNotLogPosterior(features);
+			Double post = bayes.get(i).getUnnormalizedLogPosterior(features);
+			Double notPost = bayes.get(i).getUnnormalizedNotLogPosterior(features);
 			posterior.add(post-notPost);
 			posteriorTmp.add(post-notPost);
 		}
