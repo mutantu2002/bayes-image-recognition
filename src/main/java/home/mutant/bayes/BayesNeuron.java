@@ -20,8 +20,21 @@ public class BayesNeuron
 	public int output(List<Integer> input)
 	{
 		double p = bayes.getPosterior(input);
+		int res = addSampleFromPosterior(input, p);
+		return res;
+	}
+	public int outputPrintPosterior(List<Integer> input)
+	{
+		double p = bayes.getPosterior(input);
 		System.out.println(p);
-		int res = Math.random()<p?1:0;
+		int res = addSampleFromPosterior(input, p);
+		return res;
+	}
+
+	private int addSampleFromPosterior(List<Integer> input, double posterior)
+	{
+		double random = Math.random();
+		int res = random<=posterior?1:0;
 		if (res == 0)
 		{
 			bayes.addNonClassSample(input);
