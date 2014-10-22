@@ -2,21 +2,13 @@ package home.mutant.trainings.multi.templates;
 
 import home.mutant.bayes.NaiveBayes;
 import home.mutant.deep.ui.Image;
-import home.mutant.deep.utils.ImageUtils;
-import home.mutant.deep.utils.ImageUtils.Style;
+import home.mutant.utils.MnistDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TrainMnistMultiThread
-{
-	List<Image> trainImages = new ArrayList<Image>();
-	List<Integer> trainLabels  = new ArrayList<Integer>();
-
-	List<Image> testImages = new ArrayList<Image>();
-	List<Integer> testLabels  = new ArrayList<Integer>();
-	public Style style=Style.BW;
-	
+{	
 	protected List<NaiveBayes> bayes = new ArrayList<NaiveBayes>();
 
 	private int trainListSize;
@@ -43,16 +35,16 @@ public abstract class TrainMnistMultiThread
 	
 	public void train() throws Exception
 	{
+		MnistDatabase.loadImages();
 		for (int i=0;i<10;i++)
 		{
 			bayes.add(new NaiveBayes(20,10000));
 		}
 		List<FeatureCalculator> calculators = getFeatureCalculators();
-		ImageUtils.loadImages(trainImages, testImages, trainLabels, testLabels, style);
 		for (int index = 0; index<trainListSize; index++)
 		{
-			int currentBayesIndex = trainLabels.get(index);
-			calculators.get(currentBayesIndex).imagesQueue.add(trainImages.get(index));
+			int currentBayesIndex = MnistDatabase.trainLabels.get(index);
+			calculators.get(currentBayesIndex).imagesQueue.add(MnistDatabase.trainImages.get(index));
 		}
 		List<Thread> threads = new ArrayList<Thread>();
 		
@@ -72,8 +64,8 @@ public abstract class TrainMnistMultiThread
 		List<PosteriorCalculator> posteriors = getPosteriorCalculators();
 		for (int index = 0; index<testListSize; index++)
 		{
-			int currentBayesIndex = testLabels.get(index);
-			posteriors.get(currentBayesIndex).imagesQueue.add(testImages.get(index));
+			int currentBayesIndex = MnistDatabase.testLabels.get(index);
+			posteriors.get(currentBayesIndex).imagesQueue.add(MnistDatabase.testImages.get(index));
 		}
 		threads.clear();
 		
