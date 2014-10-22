@@ -14,7 +14,7 @@ public class BayesNeuron
 	NaiveBayes bayes;
 	public BayesNeuron(int size)
 	{
-		bayes = new NaiveBayes(20, size);
+		bayes = new NaiveBayes(size*20, size);
 	}
 	
 	public int output(List<Integer> input)
@@ -35,6 +35,7 @@ public class BayesNeuron
 	{
 		double random = Math.random();
 		int res = random<=posterior?1:0;
+		System.out.println("Res "+res);
 		if (res == 0)
 		{
 			bayes.addNonClassSample(input);

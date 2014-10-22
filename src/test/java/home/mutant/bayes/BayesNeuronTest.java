@@ -1,13 +1,18 @@
 package home.mutant.bayes;
 
+import home.mutant.trainings.online.TrainBayesNeuron;
+import home.mutant.utils.MnistDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BayesNeuronTest
 {
 	@Test
+	@Ignore
 	public void testWithInputasOutput()
 	{
 		//4 input are actual inputs, and the 5th is the value that must be linked with
@@ -86,8 +91,44 @@ public class BayesNeuronTest
 	}
 	
 	@Test
-	public void testImageInputasOutput()
+	public void testImageInputasOutput() throws Exception
 	{
+		MnistDatabase.loadImages();
+		BayesNeuron n = new BayesNeuron(28*28+1);
+		TrainBayesNeuron train = new TrainBayesNeuron();
+		List<Integer> f1 = train.getFeatures(MnistDatabase.trainImages.get(0));
+		List<Integer> f2 = train.getFeatures(MnistDatabase.trainImages.get(1));
+		List<Integer> positive = new ArrayList<Integer>();
 		
+		for (int i = 0; i < 300; i++)
+		{
+			f1.add(1000);
+			positive.add(1000);
+		}
+		//n.bayes.addClassSample(positive);
+		for (int i=0;i<1000;i++)
+		{
+			double random = Math.random();
+			if (random<0.5)
+			{
+				n.outputPrintPosterior(f1);
+				System.out.println("+++++++++++++++");
+			}
+			else
+			{
+				n.outputPrintPosterior(f2);
+				System.out.println("----------------");
+			}
+			System.out.println();
+		}
+		System.out.println("Testing ..... ");
+		for (int i = 0; i < 300; i++)
+		{
+			f1.remove(f1.size()-1);
+		}
+		System.out.println("F1 " + n.outputPrintPosterior(f1));
+		System.out.println("");
+		System.out.println("F2 " + n.outputPrintPosterior(f2));
+		System.out.println("");
 	}
 }
