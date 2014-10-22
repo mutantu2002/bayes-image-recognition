@@ -83,8 +83,11 @@ public class BayesNeuronTest
 		System.out.println("");
 		System.out.println("Positive " + n.outputPrintPosterior(positiveFeature));
 		System.out.println("");
-
-		
+	}
+	
+	@Test
+	public void testImageInputasOutput()
+	{
 		
 	}
 }
