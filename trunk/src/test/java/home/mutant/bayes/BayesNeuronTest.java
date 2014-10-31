@@ -97,16 +97,16 @@ public class BayesNeuronTest
 		BayesNeuron n = new BayesNeuron(28*28+1);
 		TrainBayesNeuron train = new TrainBayesNeuron();
 		List<Integer> f1 = train.getFeatures(MnistDatabase.trainImages.get(0));
-		List<Integer> f2 = train.getFeatures(MnistDatabase.trainImages.get(1));
 		List<Integer> positive = new ArrayList<Integer>();
 		
-		for (int i = 0; i < 300; i++)
+		for (int i = 0; i < 200; i++)
 		{
 			f1.add(1000);
 			positive.add(1000);
 		}
-		//n.bayes.addClassSample(positive);
-		for (int i=0;i<1000;i++)
+		for (int i=0;i<2;i++)
+			n.bayes.addClassSample(positive);
+/*		for (int i=0;i<10000;i++)
 		{
 			double random = Math.random();
 			if (random<0.5)
@@ -120,15 +120,30 @@ public class BayesNeuronTest
 				System.out.println("----------------");
 			}
 			System.out.println();
-		}
-		System.out.println("Testing ..... ");
-		for (int i = 0; i < 300; i++)
+		}*/
+		
+		for (int i=0;i<20000;i++)
 		{
-			f1.remove(f1.size()-1);
+			int chosen = (int) (Math.random()*10);
+			if (chosen ==0)
+			{
+				n.outputPrintPosterior(f1);
+				System.out.println("+++++++++++++++");
+			}
+			else
+			{
+				n.outputPrintPosterior(train.getFeatures(MnistDatabase.trainImages.get(chosen)));
+				System.out.println("----------------");
+			}
+			System.out.println();
 		}
-		System.out.println("F1 " + n.outputPrintPosterior(f1));
+		
+		System.out.println("Testing ..... ");
 		System.out.println("");
-		System.out.println("F2 " + n.outputPrintPosterior(f2));
-		System.out.println("");
+		for(int i=0;i<10;i++)
+		{
+			System.out.println("F"+i+" " + n.outputPrintPosterior(train.getFeatures(MnistDatabase.trainImages.get(i))));
+			System.out.println("");
+		}
 	}
 }

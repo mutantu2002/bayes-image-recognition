@@ -14,7 +14,7 @@ public class BayesNeuron
 	NaiveBayes bayes;
 	public BayesNeuron(int size)
 	{
-		bayes = new NaiveBayes(size*20, size);
+		bayes = new NaiveBayes(size*500, size);
 	}
 	
 	public int output(List<Integer> input)
