@@ -121,29 +121,38 @@ public class BayesNeuronTest
 			}
 			System.out.println();
 		}*/
-		
-		for (int i=0;i<20000;i++)
+		System.out.println("Training ..... ");
+		int digitToTrain =0;
+		for (int i=0;i<60000;i++)
 		{
-			int chosen = (int) (Math.random()*10);
-			if (chosen ==0)
+			if (MnistDatabase.trainLabels.get(i)==digitToTrain)
 			{
-				n.outputPrintPosterior(f1);
-				System.out.println("+++++++++++++++");
+				List<Integer> features = train.getFeatures(MnistDatabase.trainImages.get(i));
+				features.addAll(positive);
+				for (int j=0;j<1;j++)
+					n.output(features);
 			}
 			else
 			{
-				n.outputPrintPosterior(train.getFeatures(MnistDatabase.trainImages.get(chosen)));
-				System.out.println("----------------");
+				n.output(train.getFeatures(MnistDatabase.trainImages.get(i)));
 			}
-			System.out.println();
+			if (i%6000==0)
+			{
+				System.out.println(i/600 + "%");
+			}
 		}
 		
 		System.out.println("Testing ..... ");
-		System.out.println("");
-		for(int i=0;i<10;i++)
+
+		int count=0;
+		for(int i=0;i<10000;i++)
 		{
-			System.out.println("F"+i+" " + n.outputPrintPosterior(train.getFeatures(MnistDatabase.trainImages.get(i))));
-			System.out.println("");
+			int posterior = n.output(train.getFeatures(MnistDatabase.testImages.get(i)));
+			if ((MnistDatabase.testLabels.get(i)==digitToTrain && posterior==1) || (MnistDatabase.testLabels.get(i)!=digitToTrain && posterior==0))
+			{
+				count++;
+			}
 		}
+		System.out.println("Error rate "+(10000-count)/100.);
 	}
 }

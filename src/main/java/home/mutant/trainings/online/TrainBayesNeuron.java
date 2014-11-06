@@ -42,10 +42,10 @@ public class TrainBayesNeuron
 			{
 				features.add(i);
 			}
-//			else
-//			{
-//				features.add(-1*i);
-//			}
+			else
+			{
+				features.add(-1*i);
+			}
 		}
 		return features;
 	}
