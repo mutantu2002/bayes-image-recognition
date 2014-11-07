@@ -14,7 +14,7 @@ public class BayesNeuron
 	NaiveBayes bayes;
 	public BayesNeuron(int size)
 	{
-		bayes = new NaiveBayes(size*5, size);
+		bayes = new NaiveBayes(size/2, size);
 	}
 	
 	public int output(List<Integer> input)
@@ -22,6 +22,11 @@ public class BayesNeuron
 		double p = bayes.getPosterior(input);
 		int res = addSampleFromPosterior(input, p);
 		return res;
+	}
+	public int outputWithoutTrain(List<Integer> input)
+	{
+		double p = bayes.getPosterior(input);
+		return isTriggered(p);
 	}
 	public int outputPrintPosterior(List<Integer> input)
 	{
@@ -49,9 +54,14 @@ public class BayesNeuron
 	private int isTriggered(double posterior)
 	{
 		double random = Math.random();
-		//int res = random<=posterior?1:0;
-		int res = posterior>=0.5?1:0;
+		int res = random<=posterior?1:0;
+		//int res = posterior>=0.5?1:0;
 		return res;
+	}
+
+	public void resetSmoothing()
+	{
+		bayes.kSmoothing=0;
 	}
 }
 
