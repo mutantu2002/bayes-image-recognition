@@ -11,6 +11,9 @@ import org.junit.Test;
 
 public class BayesNeuronTest
 {
+	List<Integer> positive = new ArrayList<Integer>();
+	TrainBayesNeuron train = new TrainBayesNeuron();
+	
 	@Test
 	@Ignore
 	public void testWithInputasOutput()
@@ -94,65 +97,76 @@ public class BayesNeuronTest
 	public void testImageInputasOutput() throws Exception
 	{
 		MnistDatabase.loadImages();
-		BayesNeuron n = new BayesNeuron(28*28+1);
-		TrainBayesNeuron train = new TrainBayesNeuron();
-		List<Integer> f1 = train.getFeatures(MnistDatabase.trainImages.get(0));
-		List<Integer> positive = new ArrayList<Integer>();
+		List<BayesNeuron> listBayes = new ArrayList<BayesNeuron>();
+		for(int i=0;i<10;i++)
+			listBayes.add(new BayesNeuron(28*28+1));
 		
 		for (int i = 0; i < 200; i++)
 		{
-			f1.add(1000);
 			positive.add(1000);
 		}
+		int digitToTrain = 9;
+		
+		for(int i=0;i<10;i++)
+		{
+			System.out.println("Training "+i+" ..... ");
+			trainBayesNeuron(listBayes.get(i), digitToTrain);
+		}
+		System.out.println("Testing ..... ");
+
+		int count=0;
+		//n.resetSmoothing();
+		for(int i=0;i<10000;i++)
+		{
+			int posterior=0;
+			List<Integer> posteriors = new ArrayList<Integer>();
+			double medium = 0;
+			for (int iBayes=0;iBayes<10;iBayes++)
+			{
+				int output = listBayes.get(iBayes).output(train.getFeatures2Pixels(MnistDatabase.testImages.get(i)));
+				posteriors.add(output);
+				medium+=output;
+				posterior = output;
+			}
+			if (medium!=0 && medium!=10)
+			{
+				System.out.println(medium);
+			}
+			posterior = (medium>=0.5)?1:0;
+			if ((MnistDatabase.testLabels.get(i)==digitToTrain && posterior==1) || (MnistDatabase.testLabels.get(i)!=digitToTrain && posterior==0))
+			{
+				count++;
+			}
+//			else
+//			{
+//				System.out.println(MnistDatabase.testLabels.get(i));
+//			}
+
+		}
+		System.out.println("Error rate "+(10000-count)/100.);
+	}
+	
+	private void trainBayesNeuron(BayesNeuron n, int digitToTrain)
+	{
 		for (int i=0;i<2;i++)
 			n.bayes.addClassSample(positive);
-/*		for (int i=0;i<10000;i++)
-		{
-			double random = Math.random();
-			if (random<0.5)
-			{
-				n.outputPrintPosterior(f1);
-				System.out.println("+++++++++++++++");
-			}
-			else
-			{
-				n.outputPrintPosterior(f2);
-				System.out.println("----------------");
-			}
-			System.out.println();
-		}*/
-		System.out.println("Training ..... ");
-		int digitToTrain =0;
 		for (int i=0;i<60000;i++)
 		{
 			if (MnistDatabase.trainLabels.get(i)==digitToTrain)
 			{
-				List<Integer> features = train.getFeatures(MnistDatabase.trainImages.get(i));
+				List<Integer> features = train.getFeatures2Pixels(MnistDatabase.trainImages.get(i));
 				features.addAll(positive);
-				for (int j=0;j<1;j++)
+				for (int j=0;j<10;j++)
 					n.output(features);
 			}
 			else
 			{
-				n.output(train.getFeatures(MnistDatabase.trainImages.get(i)));
+				n.output(train.getFeatures2Pixels(MnistDatabase.trainImages.get(i)));
 			}
 			if (i%6000==0)
 			{
 				System.out.println(i/600 + "%");
 			}
 		}
-		
-		System.out.println("Testing ..... ");
-
-		int count=0;
-		for(int i=0;i<10000;i++)
-		{
-			int posterior = n.output(train.getFeatures(MnistDatabase.testImages.get(i)));
-			if ((MnistDatabase.testLabels.get(i)==digitToTrain && posterior==1) || (MnistDatabase.testLabels.get(i)!=digitToTrain && posterior==0))
-			{
-				count++;
-			}
-		}
-		System.out.println("Error rate "+(10000-count)/100.);
 	}
 }

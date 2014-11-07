@@ -18,7 +18,7 @@ public abstract class TrainMnist
 	{
 		for (int i=0;i<10;i++)
 		{
-			bayes.add(new NaiveBayes(20,10000));
+			bayes.add(new NaiveBayes(150,10000));
 		}
 
 		MnistDatabase.loadImages();
