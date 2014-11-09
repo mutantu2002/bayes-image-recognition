@@ -1,6 +1,8 @@
 package home.mutant.bayes;
 
-import home.mutant.trainings.online.TrainBayesNeuron;
+import home.mutant.trainings.multi.fixedshapes.FeaturableFixedShapes;
+import home.mutant.trainings.multi.fixedshapes.FeaturableHorizontalSegments;
+import home.mutant.trainings.multi.templates.Featurable;
 import home.mutant.utils.MnistDatabase;
 
 import java.util.ArrayList;
@@ -11,8 +13,87 @@ import org.junit.Test;
 
 public class BayesNeuronTest
 {
+	public static final int IMAGES_TO_TRAIN = 60000;
+	public static final int IMAGES_TO_TEST = 10000;
+	
 	List<Integer> positive = new ArrayList<Integer>();
-	TrainBayesNeuron train = new TrainBayesNeuron();
+	Featurable featurable;
+	
+	@Test
+	public void testImageInputasOutput() throws Exception
+	{
+		MnistDatabase.loadImages();
+		featurable = new FeaturableFixedShapes();
+		List<BayesNeuron> listBayes = new ArrayList<BayesNeuron>();
+		for(int i=0;i<10;i++)
+			listBayes.add(new BayesNeuron(28*28+1));
+		
+		for (int i = 0; i < 200; i++)
+		{
+			positive.add(1000);
+		}
+		int digitToTrain = 1;
+		
+		int bayesNumber = 1;
+		for(int i=0;i<bayesNumber;i++)
+		{
+			System.out.println("Training "+i+" ..... ");
+			trainBayesNeuron(listBayes.get(i), digitToTrain);
+		}
+		System.out.println("Testing ..... ");
+
+		int count=0;
+		//n.resetSmoothing();
+		for(int i=0;i<IMAGES_TO_TEST;i++)
+		{
+			int posterior=0;
+			List<Integer> posteriors = new ArrayList<Integer>();
+			double medium = 0;
+			for (int iBayes=0;iBayes<bayesNumber;iBayes++)
+			{
+				int output = listBayes.get(iBayes).output(featurable.getFeatures(MnistDatabase.testImages.get(i)));
+				posteriors.add(output);
+				medium+=output;
+				posterior = output;
+			}
+			medium/=bayesNumber;
+			posterior = (medium>=0.5)?1:0;
+			if ((MnistDatabase.testLabels.get(i)==digitToTrain && posterior==1) || (MnistDatabase.testLabels.get(i)!=digitToTrain && posterior==0))
+			{
+				count++;
+			}
+//			else
+//			{
+//				System.out.println(MnistDatabase.testLabels.get(i));
+//			}
+
+		}
+		System.out.println("Error rate "+(IMAGES_TO_TEST-count)/(double)(IMAGES_TO_TEST/100));
+	}
+	
+	private void trainBayesNeuron(BayesNeuron n, int digitToTrain)
+	{
+		for (int i=0;i<2;i++)
+			n.bayes.addClassSample(positive);
+		for (int i=0;i<IMAGES_TO_TRAIN;i++)
+		{
+			if (MnistDatabase.trainLabels.get(i)==digitToTrain)
+			{
+				List<Integer> features = featurable.getFeatures(MnistDatabase.trainImages.get(i));
+				features.addAll(positive);
+				for (int j=0;j<10;j++)
+					n.output(features);
+			}
+			else
+			{
+				n.output(featurable.getFeatures(MnistDatabase.trainImages.get(i)));
+			}
+			if (i%(IMAGES_TO_TRAIN/10)==0)
+			{
+				System.out.println(i/(IMAGES_TO_TRAIN/100) + "%");
+			}
+		}
+	}
 	
 	@Test
 	@Ignore
@@ -91,82 +172,5 @@ public class BayesNeuronTest
 		System.out.println("");
 		System.out.println("Positive " + n.outputPrintPosterior(positiveFeature));
 		System.out.println("");
-	}
-	
-	@Test
-	public void testImageInputasOutput() throws Exception
-	{
-		MnistDatabase.loadImages();
-		List<BayesNeuron> listBayes = new ArrayList<BayesNeuron>();
-		for(int i=0;i<10;i++)
-			listBayes.add(new BayesNeuron(28*28+1));
-		
-		for (int i = 0; i < 200; i++)
-		{
-			positive.add(1000);
-		}
-		int digitToTrain = 9;
-		
-		for(int i=0;i<10;i++)
-		{
-			System.out.println("Training "+i+" ..... ");
-			trainBayesNeuron(listBayes.get(i), digitToTrain);
-		}
-		System.out.println("Testing ..... ");
-
-		int count=0;
-		//n.resetSmoothing();
-		for(int i=0;i<10000;i++)
-		{
-			int posterior=0;
-			List<Integer> posteriors = new ArrayList<Integer>();
-			double medium = 0;
-			for (int iBayes=0;iBayes<10;iBayes++)
-			{
-				int output = listBayes.get(iBayes).output(train.getFeatures2Pixels(MnistDatabase.testImages.get(i)));
-				posteriors.add(output);
-				medium+=output;
-				posterior = output;
-			}
-			if (medium!=0 && medium!=10)
-			{
-				System.out.println(medium);
-			}
-			posterior = (medium>=0.5)?1:0;
-			if ((MnistDatabase.testLabels.get(i)==digitToTrain && posterior==1) || (MnistDatabase.testLabels.get(i)!=digitToTrain && posterior==0))
-			{
-				count++;
-			}
-//			else
-//			{
-//				System.out.println(MnistDatabase.testLabels.get(i));
-//			}
-
-		}
-		System.out.println("Error rate "+(10000-count)/100.);
-	}
-	
-	private void trainBayesNeuron(BayesNeuron n, int digitToTrain)
-	{
-		for (int i=0;i<2;i++)
-			n.bayes.addClassSample(positive);
-		for (int i=0;i<60000;i++)
-		{
-			if (MnistDatabase.trainLabels.get(i)==digitToTrain)
-			{
-				List<Integer> features = train.getFeatures2Pixels(MnistDatabase.trainImages.get(i));
-				features.addAll(positive);
-				for (int j=0;j<10;j++)
-					n.output(features);
-			}
-			else
-			{
-				n.output(train.getFeatures2Pixels(MnistDatabase.trainImages.get(i)));
-			}
-			if (i%6000==0)
-			{
-				System.out.println(i/600 + "%");
-			}
-		}
 	}
 }

@@ -20,8 +20,9 @@ public class FeaturableFixedShapes implements Featurable
 	{
 		try 
 		{
-			addToShapes("/rudiment_l1.bmp");
-			//addToShapes("/rudiment3.bmp");
+			//addToShapes("/rudiment_l1.bmp");
+			//addToShapes("/rudiment_l3.bmp");
+			addToShapes("/rudiment_l4.bmp");
 		} 
 		catch (IOException e) 
 		{
@@ -32,7 +33,7 @@ public class FeaturableFixedShapes implements Featurable
 	public void addToShapes(String resource) throws IOException
 	{
 		BufferedImage resImage = ImageIO.read(ShowRudiments.class.getResourceAsStream(resource));
-		for (double theta = 0; theta<Math.PI;theta+=Math.PI/20)
+		for (double theta = 0; theta<2*Math.PI;theta+=Math.PI/5)
 		{
 			shapes.add(new Image(ImageUtils.rotate(resImage, theta)));
 		}
@@ -70,27 +71,27 @@ public class FeaturableFixedShapes implements Featurable
 			{
 				byte inImage=image.getDataOneDimensional()[(y+offsetY)*image.imageX+x+offsetX];
 				byte inShape=shape.getDataOneDimensional()[y*shape.imageX+x];
-				if(inImage!=0 && inShape!=0)
-				{
-					count+=3;
-				}
-				else if ((inImage!=0 && inShape==0))
-				{
-					count-=1;
-				}
-//				if((inImage!=0 && inShape!=0) ||(inImage==0 && inShape==0))
+//				if(inImage!=0 && inShape!=0)
 //				{
-//					count++;
+//					count+=3;
 //				}
-//				else
+//				else if ((inImage!=0 && inShape==0))
 //				{
-//					count--;
+//					count-=1;
 //				}
+				if(inImage == inShape)
+				{
+					count++;
+				}
+				else
+				{
+					count--;
+				}
 			}
 		}
 //		if(count>0)
-//		System.out.println(count);
-		if (count>45)
+		//System.out.println(count);
+		if (count>20)
 		{
 			//System.out.println(count);
 			return true;
