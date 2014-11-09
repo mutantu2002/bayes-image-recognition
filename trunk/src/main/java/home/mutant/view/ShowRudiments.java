@@ -16,9 +16,9 @@ public class ShowRudiments
 	public static void main(String[] args) throws Exception
 	{
 		ResultFrame frame = new ResultFrame(1200, 600);
-		BufferedImage resImage = ImageIO.read(ShowRudiments.class.getResourceAsStream("/rudiment3.bmp"));
+		BufferedImage resImage = ImageIO.read(ShowRudiments.class.getResourceAsStream("/rudiment_l4.bmp"));
 		List<Image> list = new ArrayList<Image>();
-		for (double theta = 0; theta<2*Math.PI;theta+=Math.PI/20)
+		for (double theta = 0; theta<2*Math.PI;theta+=Math.PI/5)
 		{
 			list.add(new Image(ImageUtils.rotate(resImage, theta)));
 		}

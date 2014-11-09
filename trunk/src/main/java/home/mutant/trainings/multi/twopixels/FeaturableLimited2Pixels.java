@@ -6,9 +6,9 @@ import home.mutant.trainings.multi.templates.Featurable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeaturableSegments2Pixels implements  Featurable
+public class FeaturableLimited2Pixels implements  Featurable
 {
-	static final int SEGMENTS =100;
+	static final int SEGMENTS =15;
 	static final int STEP_SEGMENTS = 1;
 	@Override
 	public List<Integer> getFeatures(Image image)
@@ -19,7 +19,7 @@ public class FeaturableSegments2Pixels implements  Featurable
 		{
 			if (oneDimension[i]!=0)
 			{
-				for (int j = 0; j<=SEGMENTS; j+=1)
+				for (int j = 1; j<=SEGMENTS; j+=1)
 				{
 					if (oneDimension[i+STEP_SEGMENTS*j]!=0)
 					{
