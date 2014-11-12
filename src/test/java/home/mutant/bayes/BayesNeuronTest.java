@@ -1,7 +1,6 @@
 package home.mutant.bayes;
 
 import home.mutant.trainings.multi.fixedshapes.FeaturableFixedShapes;
-import home.mutant.trainings.multi.fixedshapes.FeaturableHorizontalSegments;
 import home.mutant.trainings.multi.templates.Featurable;
 import home.mutant.utils.MnistDatabase;
 

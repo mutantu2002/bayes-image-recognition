@@ -54,8 +54,8 @@ public class BayesNeuron
 	private int isTriggered(double posterior)
 	{
 		double random = Math.random();
-		//int res = random<=posterior?1:0;
-		int res = posterior>=0.5?1:0;
+		int res = random<=posterior?1:0;
+		//int res = posterior>=0.5?1:0;
 		return res;
 	}
 
