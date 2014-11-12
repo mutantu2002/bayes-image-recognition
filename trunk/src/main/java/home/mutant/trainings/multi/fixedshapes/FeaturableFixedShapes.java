@@ -20,7 +20,7 @@ public class FeaturableFixedShapes implements Featurable
 	{
 		try 
 		{
-			//addToShapes("/rudiment_l1.bmp");
+			addToShapes("/rudiment_l2.bmp");
 			//addToShapes("/rudiment_l3.bmp");
 			addToShapes("/rudiment_l4.bmp");
 		} 
@@ -91,7 +91,7 @@ public class FeaturableFixedShapes implements Featurable
 		}
 //		if(count>0)
 		//System.out.println(count);
-		if (count>20)
+		if (count>25)
 		{
 			//System.out.println(count);
 			return true;
