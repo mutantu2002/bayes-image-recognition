@@ -1,10 +1,10 @@
 package home.mutant.bayes;
 
-import home.mutant.trainings.multi.feature.FeatureCalculatorMulti;
-import home.mutant.trainings.multi.feature.IndexFeature;
-import home.mutant.trainings.multi.feature.IndexImage;
-import home.mutant.trainings.multi.fixedshapes.FeaturableFixedShapes;
-import home.mutant.trainings.multi.templates.Featurable;
+import home.mutant.trainings.multithread.feature.FeatureCalculatorMultiThread;
+import home.mutant.trainings.multithread.feature.IndexFeature;
+import home.mutant.trainings.multithread.feature.IndexImage;
+import home.mutant.trainings.multithread.fixedshapes.FeaturableFixedShapes;
+import home.mutant.trainings.multithread.templates.Featurable;
 import home.mutant.utils.MnistDatabase;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class BayesNeuronMultiTest
+public class BayesNeuronMultiThreadTest
 {
 	public static final int IMAGES_TO_TRAIN = 60000;
 	public static final int IMAGES_TO_TEST = 10000;
@@ -26,26 +26,26 @@ public class BayesNeuronMultiTest
 		MnistDatabase.loadImages();
 		featurable = new FeaturableFixedShapes();
 		List<BayesNeuron> listBayes = new ArrayList<BayesNeuron>();
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 300; i++)
 		{
-			positive.add(1000);
+			positive.add(10000);
 		}
 		for(int i=0;i<10;i++)
 		{
-			BayesNeuron bayesNeuron = new BayesNeuron(28*28+1);
+			BayesNeuron bayesNeuron = new BayesNeuronDecay(28*28+1);
 			listBayes.add(bayesNeuron);
 			bayesNeuron.bayes.addClassSample(positive);
 		}
 
-		int digitToTrain = 8;
+		int digitToTrain = 9;
 		
 		int bayesNumber = 1;
-		FeatureCalculatorMulti calc = new FeatureCalculatorMulti(6, featurable);
+		FeatureCalculatorMultiThread calc = new FeatureCalculatorMultiThread(6, featurable);
 		for(int i=0;i<IMAGES_TO_TRAIN;i++)
 		{
 			calc.imagesQueue.add(new IndexImage(i,MnistDatabase.trainImages.get(i)));
 		}
-		calc.start();
+		calc.start(0);
 		System.out.println("Training ..... ");
 		while(true)
 		{
@@ -58,12 +58,12 @@ public class BayesNeuronMultiTest
 		}
 		System.out.println("Testing ..... ");
 
-		FeatureCalculatorMulti calcTest = new FeatureCalculatorMulti(6, featurable);
+		FeatureCalculatorMultiThread calcTest = new FeatureCalculatorMultiThread(6, featurable);
 		for(int i=0;i<IMAGES_TO_TEST;i++)
 		{
 			calcTest.imagesQueue.add(new IndexImage(i,MnistDatabase.testImages.get(i)));
 		}
-		calcTest.start();
+		calcTest.start(0);
 		
 		int count=0;
 		while(true)
@@ -96,13 +96,22 @@ public class BayesNeuronMultiTest
 		if (MnistDatabase.trainLabels.get(features.index)==digitToTrain)
 		{
 			features.features.addAll(positive);
-			for (int j=0;j<10;j++)
+			//System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+			for (int j=0;j<1;j++)
+			{
+				//System.out.println("*********************");
+				//n.outputPrintPosterior(features.features);
 				n.output(features.features);
+			}
 		}
 		else
 		{
 			for (int j=0;j<1;j++)
+			{
+				//System.out.println("dddddddddddddddddd");
+				//n.outputPrintPosterior(features.features);
 				n.output(features.features);
+			}
 		}
 	}
 	

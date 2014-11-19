@@ -1,7 +1,7 @@
-package home.mutant.trainings.multi.twopixels;
+package home.mutant.trainings.multithread.twopixels;
 
-import home.mutant.trainings.multi.templates.Featurable;
-import home.mutant.trainings.multi.templates.TrainMnistMultiThread;
+import home.mutant.trainings.multithread.templates.Featurable;
+import home.mutant.trainings.multithread.templates.TrainMnistMultiThread;
 
 
 public class TrainMulti2Pixels extends TrainMnistMultiThread

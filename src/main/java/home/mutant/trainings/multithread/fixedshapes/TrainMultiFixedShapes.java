@@ -1,7 +1,7 @@
-package home.mutant.trainings.multi.fixedshapes;
+package home.mutant.trainings.multithread.fixedshapes;
 
-import home.mutant.trainings.multi.templates.Featurable;
-import home.mutant.trainings.multi.templates.TrainMnistMultiThread;
+import home.mutant.trainings.multithread.templates.Featurable;
+import home.mutant.trainings.multithread.templates.TrainMnistMultiThread;
 
 
 public class TrainMultiFixedShapes extends TrainMnistMultiThread

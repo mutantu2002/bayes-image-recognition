@@ -1,4 +1,4 @@
-package home.mutant.trainings.multi.fixedshapes;
+package home.mutant.trainings.multithread.fixedshapes;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -8,11 +8,11 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import home.mutant.deep.ui.Image;
-import home.mutant.trainings.multi.templates.Featurable;
+import home.mutant.trainings.multithread.templates.Featurable;
 import home.mutant.utils.ImageUtils;
 import home.mutant.view.ShowRudiments;
 
-public class FeaturableFixedShapes implements Featurable
+public class FeaturableFixedShapes extends Featurable
 {
 	List<Image> shapes = new ArrayList<Image>();
 	
@@ -33,18 +33,19 @@ public class FeaturableFixedShapes implements Featurable
 	public void addToShapes(String resource) throws IOException
 	{
 		BufferedImage resImage = ImageIO.read(ShowRudiments.class.getResourceAsStream(resource));
-		for (double theta = 0; theta<2*Math.PI;theta+=Math.PI/5)
+		for (double theta = 0; theta<2*Math.PI;theta+=Math.PI/8)
 		{
 			shapes.add(new Image(ImageUtils.rotate(resImage, theta)));
 		}
 	}
 	@Override
-	public List<Integer> getFeatures(Image image)
+	public List<Integer> getDataFeatures(byte[] oneDimensional)
 	{
-		int length = image.getDataOneDimensional().length;
-		
+		int length = shapes.size();
+		int lengthImage = oneDimensional.length;
+		Image image = new Image(oneDimensional);
 		List<Integer> features = new ArrayList<Integer>();
-		for (int index=0;index<shapes.size();index++) 
+		for (int index=0;index<length;index+=1) 
 		{
 			Image shape = shapes.get(index);
 			int indexImage=0;
@@ -91,12 +92,13 @@ public class FeaturableFixedShapes implements Featurable
 		}
 //		if(count>0)
 		//System.out.println(count);
-		if (count>20)
+		if (count>23)
 		{
 			//System.out.println(count);
 			return true;
 		}
 		return false;
 	}
+
 }
 

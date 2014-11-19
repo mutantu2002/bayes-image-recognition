@@ -1,4 +1,4 @@
-package home.mutant.trainings.multi.feature;
+package home.mutant.trainings.multithread.feature;
 
 import java.util.List;
 
