@@ -1,4 +1,4 @@
-package home.mutant.trainings.multi.templates;
+package home.mutant.trainings.multithread.templates;
 
 import home.mutant.bayes.NaiveBayes;
 import home.mutant.deep.ui.Image;

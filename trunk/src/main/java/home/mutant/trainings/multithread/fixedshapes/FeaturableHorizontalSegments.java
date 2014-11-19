@@ -1,19 +1,17 @@
-package home.mutant.trainings.multi.fixedshapes;
+package home.mutant.trainings.multithread.fixedshapes;
 
-import home.mutant.deep.ui.Image;
-import home.mutant.trainings.multi.templates.Featurable;
+import home.mutant.trainings.multithread.templates.Featurable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeaturableHorizontalSegments implements  Featurable
+public class FeaturableHorizontalSegments extends  Featurable
 {
 	static final int SEGMENT_LENGTH =20;
 	@Override
-	public List<Integer> getFeatures(Image image)
+	public List<Integer> getDataFeatures(byte[] oneDimension)
 	{
 		List<Integer> features = new ArrayList<Integer>();
-		byte[] oneDimension = image.getDataOneDimensional();
 		for (int i = 0; i < oneDimension.length-SEGMENT_LENGTH; i++)
 		{
 			if (oneDimension[i]!=0)

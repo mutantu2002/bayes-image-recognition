@@ -1,6 +1,6 @@
-package home.mutant.trainings.multi.feature;
+package home.mutant.trainings.multithread.feature;
 
-import home.mutant.trainings.multi.templates.Featurable;
+import home.mutant.trainings.multithread.templates.Featurable;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 

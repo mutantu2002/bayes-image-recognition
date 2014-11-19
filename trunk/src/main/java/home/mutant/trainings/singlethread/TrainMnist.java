@@ -1,4 +1,4 @@
-package home.mutant.trainings.single;
+package home.mutant.trainings.singlethread;
 
 import home.mutant.bayes.NaiveBayes;
 import home.mutant.deep.ui.Image;

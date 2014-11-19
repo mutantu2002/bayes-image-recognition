@@ -1,6 +1,7 @@
 package home.mutant.trainings.online;
 
 import home.mutant.bayes.BayesNeuron;
+import home.mutant.bayes.BayesNeuronAddPositiveIfTriggered;
 import home.mutant.deep.ui.Image;
 import home.mutant.utils.MnistDatabase;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class TrainBayesNeuron 
 {	
-	List<BayesNeuron> neurons = new ArrayList<BayesNeuron>();
+	List<BayesNeuronAddPositiveIfTriggered> neurons = new ArrayList<BayesNeuronAddPositiveIfTriggered>();
 	
 	public static void main(String[] args) throws Exception
 	{
@@ -17,7 +18,7 @@ public class TrainBayesNeuron
 	}
 	public void train() throws Exception
 	{
-		BayesNeuron b = new BayesNeuron(28*28);
+		BayesNeuron b = new BayesNeuronAddPositiveIfTriggered(28*28);
 		MnistDatabase.loadImages();
 		for (int index = 0; index<60000; index++)
 		{

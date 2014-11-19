@@ -1,7 +1,7 @@
 package home.mutant.bayes;
 
-import home.mutant.trainings.multi.fixedshapes.FeaturableFixedShapes;
-import home.mutant.trainings.multi.templates.Featurable;
+import home.mutant.trainings.multithread.fixedshapes.FeaturableFixedShapes;
+import home.mutant.trainings.multithread.templates.Featurable;
 import home.mutant.utils.MnistDatabase;
 
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ public class BayesNeuronTest
 	{
 		MnistDatabase.loadImages();
 		featurable = new FeaturableFixedShapes();
-		List<BayesNeuron> listBayes = new ArrayList<BayesNeuron>();
+		List<BayesNeuronAddPositiveIfTriggered> listBayes = new ArrayList<BayesNeuronAddPositiveIfTriggered>();
 		for(int i=0;i<10;i++)
-			listBayes.add(new BayesNeuron(28*28+1));
+			listBayes.add(new BayesNeuronAddPositiveIfTriggered(28*28+1));
 		
 		for (int i = 0; i < 200; i++)
 		{
@@ -101,7 +101,7 @@ public class BayesNeuronTest
 		//4 input are actual inputs, and the 5th is the value that must be linked with
 		//it's kind of a supervised learning
 		//hopefully after some cycles the neuron will learn also positive and negative inputs
-		BayesNeuron n = new BayesNeuron(10);
+		BayesNeuron n = new BayesNeuronAddPositiveIfTriggered(10);
 		List<Integer> positiveFeature = new ArrayList<Integer>();
 		List<Integer> negativeFeature = new ArrayList<Integer>();
 		List<Integer> allFeature = new ArrayList<Integer>();
