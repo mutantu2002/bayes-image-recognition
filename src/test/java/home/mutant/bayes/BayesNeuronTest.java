@@ -12,13 +12,56 @@ import org.junit.Test;
 
 public class BayesNeuronTest
 {
-	public static final int IMAGES_TO_TRAIN = 60000;
-	public static final int IMAGES_TO_TEST = 10000;
+	public static final int IMAGES_TO_TRAIN = 6000;
+	public static final int IMAGES_TO_TEST = 100;
 	
 	List<Integer> positive = new ArrayList<Integer>();
 	Featurable featurable;
 	
+
 	@Test
+	public void testNoPositive() throws Exception
+	{
+		MnistDatabase.loadImages();
+		featurable = new FeaturableFixedShapes();
+		List<BayesNeuronAddPositiveIfTriggered> listBayes = new ArrayList<BayesNeuronAddPositiveIfTriggered>();
+		for(int i=0;i<10;i++)
+			listBayes.add(new BayesNeuronAddPositiveIfTriggered(28*28+1));
+		
+		int bayesNumber = 10;
+		for (int i=0;i<IMAGES_TO_TRAIN;i++)
+		{
+			for(int b=0;b<bayesNumber;b++)
+			{	
+				System.out.println("NNNNNNNNNN "+b);
+				listBayes.get(b).output(featurable.getFeatures(MnistDatabase.trainImages.get(i)));
+			}
+		}
+		for(int b=0;b<bayesNumber;b++)
+		{
+			System.out.println();
+			System.out.println();
+			System.out.println("NNNNNNNNNN "+b);
+			for (int i=0;i<100;i++)
+			{
+				if (MnistDatabase.trainLabels.get(i)==0)
+					listBayes.get(b).outputPrintPosterior(featurable.getFeatures(MnistDatabase.trainImages.get(i)));
+			}
+			System.out.println("NNNNNNNNNN "+b+"   1");
+			for (int i=0;i<100;i++)
+			{
+				if (MnistDatabase.trainLabels.get(i)==1)
+					listBayes.get(b).outputPrintPosterior(featurable.getFeatures(MnistDatabase.trainImages.get(i)));
+			}
+			System.out.println("NNNNNNNNNN "+b+"   2");
+			for (int i=0;i<100;i++)
+			{
+				if (MnistDatabase.trainLabels.get(i)==2)
+					listBayes.get(b).outputPrintPosterior(featurable.getFeatures(MnistDatabase.trainImages.get(i)));
+			}
+		}
+		System.out.println("");
+	}
 	public void testImageInputasOutput() throws Exception
 	{
 		MnistDatabase.loadImages();
@@ -69,6 +112,7 @@ public class BayesNeuronTest
 		}
 		System.out.println("Error rate "+(IMAGES_TO_TEST-count)/(double)(IMAGES_TO_TEST/100));
 	}
+
 	
 	private void trainBayesNeuron(BayesNeuron n, int digitToTrain)
 	{

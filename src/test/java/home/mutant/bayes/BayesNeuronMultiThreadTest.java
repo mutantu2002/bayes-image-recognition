@@ -14,8 +14,8 @@ import org.junit.Test;
 
 public class BayesNeuronMultiThreadTest
 {
-	public static final int IMAGES_TO_TRAIN = 60000;
-	public static final int IMAGES_TO_TEST = 10000;
+	public static final int IMAGES_TO_TRAIN = 600;
+	public static final int IMAGES_TO_TEST = 100;
 	
 	List<Integer> positive = new ArrayList<Integer>();
 	Featurable featurable;
@@ -99,18 +99,18 @@ public class BayesNeuronMultiThreadTest
 			//System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 			for (int j=0;j<1;j++)
 			{
-				//System.out.println("*********************");
-				//n.outputPrintPosterior(features.features);
-				n.output(features.features);
+				System.out.println("*********************");
+				n.outputPrintPosterior(features.features);
+				//n.output(features.features);
 			}
 		}
 		else
 		{
 			for (int j=0;j<1;j++)
 			{
-				//System.out.println("dddddddddddddddddd");
-				//n.outputPrintPosterior(features.features);
-				n.output(features.features);
+				System.out.println("dddddddddddddddddd");
+				n.outputPrintPosterior(features.features);
+				//n.output(features.features);
 			}
 		}
 	}

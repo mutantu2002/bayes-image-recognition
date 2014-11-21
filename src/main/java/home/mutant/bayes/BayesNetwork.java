@@ -5,16 +5,17 @@ import java.util.List;
 
 public class BayesNetwork 
 {
-	public BayesNeuron outputNeuron = new BayesNeuronAddPositiveIfTriggered(4*4+1);
+	public BayesNeuron outputNeuron;
 	public List<BayesNeuron> inputLayer = new  ArrayList<BayesNeuron>();
 	List<Integer> positive = new ArrayList<Integer>();
 	
 	public BayesNetwork(int sizeInputLayer)
 	{
-		for (int i = 0; i < 200; i++)
+		for (int i = 0; i < 305; i++)
 		{
 			positive.add(100000);
 		}
+		outputNeuron = new BayesNeuronAddPositiveIfTriggered(sizeInputLayer+1);
 		for (int i = 0; i < sizeInputLayer; i++) 
 		{
 			BayesNeuronAddPositiveIfTriggered bayesNeuron = new BayesNeuronAddPositiveIfTriggered(49*49+1);
@@ -36,13 +37,13 @@ public class BayesNetwork
 			List<Integer> subInput = input.get(i);
 			if (subInput.size()!=0)
 			{
-				if (isPositiveInput)
-				{
-					subInput.addAll(positive);
-					System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-				}
+//				if (isPositiveInput)
+//				{
+//					subInput.addAll(positive);
+//					System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//				}
 				
-				int output2 = inputLayer.get(i).outputPrintPosterior(subInput);
+				int output2 = inputLayer.get(i).output(subInput);
 				if (output2==1)
 				{
 					output.add(i*output2);
@@ -52,7 +53,9 @@ public class BayesNetwork
 		if (isPositiveInput)
 		{
 			output.addAll(positive);
+			System.out.println("pppppppppppppppp");
 		}
-		return outputNeuron.output(output);
+		System.out.println("qqqqqqqqqqqqqqqqqqq");
+		return outputNeuron.outputPrintPosterior(output);
 	}
 }
