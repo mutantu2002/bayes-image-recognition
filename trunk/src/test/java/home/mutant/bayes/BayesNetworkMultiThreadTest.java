@@ -13,10 +13,10 @@ import org.junit.Test;
 
 public class BayesNetworkMultiThreadTest 
 {
-	public static final int IMAGES_TO_TRAIN = 6000;
-	public static final int IMAGES_TO_TEST = 1000;
+	public static final int IMAGES_TO_TRAIN = 600;
+	public static final int IMAGES_TO_TEST = 100;
 	Featurable featurable;
-	BayesNetwork network = new BayesNetwork(16);
+	BayesNetwork network = new BayesNetwork(49);
 	
 	@Test
 	public void test() throws IOException
@@ -31,7 +31,7 @@ public class BayesNetworkMultiThreadTest
 		{
 			calc.imagesQueue.add(new IndexImage(i,MnistDatabase.trainImages.get(i)));
 		}
-		calc.start(7);
+		calc.start(4);
 		System.out.println("Training ..... ");
 		while(true)
 		{
@@ -40,7 +40,7 @@ public class BayesNetworkMultiThreadTest
 			boolean isPositiveInput = MnistDatabase.trainLabels.get(indexF.index)==digitToTrain;
 			if (isPositiveInput)
 			{
-				for (int j=0;j<5;j++)
+				for (int j=0;j<10;j++)
 					network.output(indexF.multiFeatures, isPositiveInput);
 			}
 			else
@@ -55,7 +55,7 @@ public class BayesNetworkMultiThreadTest
 		{
 			calcTest.imagesQueue.add(new IndexImage(i,MnistDatabase.testImages.get(i)));
 		}
-		calcTest.start(7);
+		calcTest.start(4);
 		
 		int count=0;
 		while(true)
