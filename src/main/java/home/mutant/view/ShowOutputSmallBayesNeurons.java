@@ -1,6 +1,7 @@
 package home.mutant.view;
 
 import home.mutant.bayes.BayesNeuronAddPositiveIfTriggered;
+import home.mutant.bayes.NaiveBayes;
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
 import home.mutant.trainings.multithread.templates.Featurable;
@@ -13,7 +14,7 @@ import java.util.List;
 public class ShowOutputSmallBayesNeurons 
 {
 
-	public static final int IMAGES_TO_TRAIN = 6000;
+	public static final int IMAGES_TO_TRAIN = 1000;
 	public static final int IMAGES_TO_TEST = 200;
 	
 	public static void main(String[] args) throws Exception
@@ -22,7 +23,7 @@ public class ShowOutputSmallBayesNeurons
 		Featurable featurable = new Featurable1Pixel();
 		List<IndexBayesNeuron> listBayes = new ArrayList<IndexBayesNeuron>();
 
-		int bayesSqrt = 30;
+		int bayesSqrt = 100;
 		int bayesNumber = bayesSqrt*bayesSqrt;
 		while(listBayes.size()<bayesNumber)
 		{
@@ -40,9 +41,9 @@ public class ShowOutputSmallBayesNeurons
 				b.neuron.output(featurable.getSubImageFeatures(MnistDatabase.trainImages.get(i), x, y, 7));
 			}
 		}
-
-		ResultFrame frame = new ResultFrame(1200, 700);
-		
+		int digitToTrain=0;
+		/* show output
+		 * ResultFrame frame = new ResultFrame(1200, 700);
 		for (int digit=0;digit<10;digit++)
 		{
 			int index=0;
@@ -61,7 +62,57 @@ public class ShowOutputSmallBayesNeurons
 				frame.showImage(new Image(bytes),(bayesSqrt+2)*(index++), (bayesSqrt+2)*digit);
 			}
 		}
-		System.out.println("");
+		*/
+		NaiveBayes bayes = new NaiveBayes(100, bayesNumber);
+		for (int i=0;i<IMAGES_TO_TRAIN;i++)
+		{
+			byte[] bytes  = new byte[bayesNumber];
+			int indexBayes=0;
+			for(IndexBayesNeuron b:listBayes)
+			{
+				int x=b.index/21;
+				int y=b.index%21;
+				bytes[indexBayes++] = (byte)(255*b.neuron.output(featurable.getSubImageFeatures(MnistDatabase.trainImages.get(i), x, y, 7)));
+			}
+			List<Integer> features = featurable.getFeatures(new Image(bytes));
+			if(MnistDatabase.trainLabels.get(i)==digitToTrain)
+			{
+				bayes.addClassSample(features);
+//				bayes.addClassSample(features);
+//				bayes.addClassSample(features);
+//				bayes.addClassSample(features);
+			}
+			else
+			{
+				bayes.addNonClassSample(features);
+			}
+		}
+		
+		int count=0;
+		for (int i=0;i<IMAGES_TO_TEST;i++)
+		{
+			byte[] bytes  = new byte[bayesNumber];
+			int indexBayes=0;
+			for(IndexBayesNeuron b:listBayes)
+			{
+				int x=b.index/21;
+				int y=b.index%21;
+				bytes[indexBayes++] = (byte)(255*b.neuron.output(featurable.getSubImageFeatures(MnistDatabase.testImages.get(i), x, y, 7)));
+			}
+			List<Integer> features = featurable.getFeatures(new Image(bytes));
+			double posterior = bayes.getPosterior(features);
+			
+//			if (MnistDatabase.testLabels.get(i)==0)
+//				System.out.println("xxxxxxxxxxxxxxxxcccccccccccccccccccc");
+//			System.out.println(MnistDatabase.testLabels.get(i)+":"+posterior);
+			
+			if ((MnistDatabase.testLabels.get(i)==digitToTrain && posterior>0.91) ||
+					(MnistDatabase.testLabels.get(i)!=digitToTrain && posterior<0.5))
+			{
+				count++;
+			}
+		}
+		System.out.println("Error rate "+(IMAGES_TO_TEST-count)/(double)(IMAGES_TO_TEST/100));
 
 	}
 
