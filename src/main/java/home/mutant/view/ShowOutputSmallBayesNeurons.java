@@ -7,8 +7,8 @@ import home.mutant.trainings.multithread.templates.Featurable;
 import home.mutant.trainings.singlethread.Featurable1Pixel;
 import home.mutant.utils.MnistDatabase;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShowOutputSmallBayesNeurons 
 {
@@ -20,23 +20,28 @@ public class ShowOutputSmallBayesNeurons
 	{
 		MnistDatabase.loadImages();
 		Featurable featurable = new Featurable1Pixel();
-		Map<Integer, BayesNeuronAddPositiveIfTriggered> mapBayes = new LinkedHashMap<Integer, BayesNeuronAddPositiveIfTriggered>();
+		List<IndexBayesNeuron> listBayes = new ArrayList<IndexBayesNeuron>();
 
-		
-		int bayesNumber = 900;
-		while(mapBayes.size()<bayesNumber)
-			mapBayes.put(((int)(441*Math.random())),new BayesNeuronAddPositiveIfTriggered(1+(int) (Math.random()*100)));
+		int bayesSqrt = 30;
+		int bayesNumber = bayesSqrt*bayesSqrt;
+		while(listBayes.size()<bayesNumber)
+		{
+			IndexBayesNeuron indexB = new IndexBayesNeuron();
+			indexB.index = ((int)(441*Math.random()));
+			indexB.neuron = new BayesNeuronAddPositiveIfTriggered(1+(int) (Math.random()*100));
+			listBayes.add(indexB);
+		}
 		for (int i=0;i<IMAGES_TO_TRAIN;i++)
 		{
-			for(int b:mapBayes.keySet())
+			for(IndexBayesNeuron b:listBayes)
 			{	
-				int x=b/21;
-				int y=b%21;
-				mapBayes.get(b).output(featurable.getSubImageFeatures(MnistDatabase.trainImages.get(i), x, y, 7));
+				int x=b.index/21;
+				int y=b.index%21;
+				b.neuron.output(featurable.getSubImageFeatures(MnistDatabase.trainImages.get(i), x, y, 7));
 			}
 		}
 
-		ResultFrame frame = new ResultFrame(1000, 300);
+		ResultFrame frame = new ResultFrame(1200, 700);
 		
 		for (int digit=0;digit<10;digit++)
 		{
@@ -44,16 +49,16 @@ public class ShowOutputSmallBayesNeurons
 			for (int i=0;i<IMAGES_TO_TEST;i++)
 			{
 				byte[] bytes  = new byte[bayesNumber];
-				if (MnistDatabase.trainLabels.get(i)!=digit)
+				if (MnistDatabase.testLabels.get(i)!=digit)
 					continue;
 				int indexBayes=0;
-				for(int b:mapBayes.keySet())
+				for(IndexBayesNeuron b:listBayes)
 				{
-					int x=b/21;
-					int y=b%21;
-					bytes[indexBayes++] = (byte)(255*mapBayes.get(b).output(featurable.getSubImageFeatures(MnistDatabase.trainImages.get(i), x, y, 7)));
+					int x=b.index/21;
+					int y=b.index%21;
+					bytes[indexBayes++] = (byte)(255*b.neuron.output(featurable.getSubImageFeatures(MnistDatabase.testImages.get(i), x, y, 7)));
 				}
-				frame.showImage(new Image(bytes),32*(index++), 32*digit);
+				frame.showImage(new Image(bytes),(bayesSqrt+2)*(index++), (bayesSqrt+2)*digit);
 			}
 		}
 		System.out.println("");
