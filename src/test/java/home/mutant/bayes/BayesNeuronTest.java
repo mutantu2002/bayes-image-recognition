@@ -1,5 +1,7 @@
 package home.mutant.bayes;
 
+import home.mutant.deep.ui.Image;
+import home.mutant.deep.ui.ResultFrame;
 import home.mutant.trainings.multithread.fixedshapes.FeaturableFixedShapes;
 import home.mutant.trainings.multithread.templates.Featurable;
 import home.mutant.utils.MnistDatabase;
@@ -12,7 +14,7 @@ import org.junit.Test;
 
 public class BayesNeuronTest
 {
-	public static final int IMAGES_TO_TRAIN = 6000;
+	public static final int IMAGES_TO_TRAIN = 600;
 	public static final int IMAGES_TO_TEST = 100;
 	
 	List<Integer> positive = new ArrayList<Integer>();
@@ -25,40 +27,55 @@ public class BayesNeuronTest
 		MnistDatabase.loadImages();
 		featurable = new FeaturableFixedShapes();
 		List<BayesNeuronAddPositiveIfTriggered> listBayes = new ArrayList<BayesNeuronAddPositiveIfTriggered>();
-		for(int i=0;i<10;i++)
-			listBayes.add(new BayesNeuronAddPositiveIfTriggered(28*28+1));
+
 		
-		int bayesNumber = 10;
+		int bayesNumber = 100;
+		for(int i=0;i<bayesNumber;i++)
+			listBayes.add(new BayesNeuronAddPositiveIfTriggered(28*28+1));
 		for (int i=0;i<IMAGES_TO_TRAIN;i++)
 		{
+			List<Integer> features = featurable.getFeatures(MnistDatabase.trainImages.get(i));
 			for(int b=0;b<bayesNumber;b++)
 			{	
-				System.out.println("NNNNNNNNNN "+b);
-				listBayes.get(b).output(featurable.getFeatures(MnistDatabase.trainImages.get(i)));
+				//System.out.println("NNNNNNNNNN "+b);
+				
+				listBayes.get(b).output(features);
 			}
 		}
-		for(int b=0;b<bayesNumber;b++)
+//		for(int b=0;b<bayesNumber;b++)
+//		{
+//			System.out.println();
+//			System.out.println();
+//			System.out.println("NNNNNNNNNN "+b);
+//			for (int i=0;i<100;i++)
+//			{
+//				if (MnistDatabase.trainLabels.get(i)==0)
+//					listBayes.get(b).outputPrintPosterior(featurable.getFeatures(MnistDatabase.trainImages.get(i)));
+//			}
+//			System.out.println("NNNNNNNNNN "+b+"   1");
+//			for (int i=0;i<100;i++)
+//			{
+//				if (MnistDatabase.trainLabels.get(i)==1)
+//					listBayes.get(b).outputPrintPosterior(featurable.getFeatures(MnistDatabase.trainImages.get(i)));
+//			}
+//			System.out.println("NNNNNNNNNN "+b+"   2");
+//			for (int i=0;i<100;i++)
+//			{
+//				if (MnistDatabase.trainLabels.get(i)==2)
+//					listBayes.get(b).outputPrintPosterior(featurable.getFeatures(MnistDatabase.trainImages.get(i)));
+//			}
+//		}
+		ResultFrame frame = new ResultFrame(500, 300);
+
+		for (int i=0;i<10;i++)
 		{
-			System.out.println();
-			System.out.println();
-			System.out.println("NNNNNNNNNN "+b);
-			for (int i=0;i<100;i++)
+			byte[] bytes  = new byte[bayesNumber];
+			List<Integer> features = featurable.getFeatures(MnistDatabase.testImages.get(i));
+			for(int b=0;b<bayesNumber;b++)
 			{
-				if (MnistDatabase.trainLabels.get(i)==0)
-					listBayes.get(b).outputPrintPosterior(featurable.getFeatures(MnistDatabase.trainImages.get(i)));
+				bytes[b] = (byte)(255*listBayes.get(b).outputPrintPosterior(features));
 			}
-			System.out.println("NNNNNNNNNN "+b+"   1");
-			for (int i=0;i<100;i++)
-			{
-				if (MnistDatabase.trainLabels.get(i)==1)
-					listBayes.get(b).outputPrintPosterior(featurable.getFeatures(MnistDatabase.trainImages.get(i)));
-			}
-			System.out.println("NNNNNNNNNN "+b+"   2");
-			for (int i=0;i<100;i++)
-			{
-				if (MnistDatabase.trainLabels.get(i)==2)
-					listBayes.get(b).outputPrintPosterior(featurable.getFeatures(MnistDatabase.trainImages.get(i)));
-			}
+			frame.showImage(new Image(bytes),12*i, 0);
 		}
 		System.out.println("");
 	}
