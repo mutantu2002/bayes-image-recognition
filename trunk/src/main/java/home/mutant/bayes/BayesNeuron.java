@@ -4,7 +4,7 @@ import java.util.List;
 
 public abstract class BayesNeuron {
 
-	protected NaiveBayes bayes;
+	public NaiveBayes bayes;
 
 	public BayesNeuron(int size)
 	{
