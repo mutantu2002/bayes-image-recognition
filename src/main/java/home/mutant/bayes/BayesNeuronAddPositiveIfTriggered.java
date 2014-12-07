@@ -19,6 +19,10 @@ public class BayesNeuronAddPositiveIfTriggered extends BayesNeuron
 	@Override
 	public int output(List<Integer> input)
 	{
+		if (input==null || input.size()==0)
+		{
+			return 0;
+		}
 		double p = bayes.getPosterior(input);
 		int res = addSampleFromPosterior(input, p);
 		return res;
@@ -26,6 +30,10 @@ public class BayesNeuronAddPositiveIfTriggered extends BayesNeuron
 	@Override
 	public int outputPrintPosterior(List<Integer> input)
 	{
+		if (input==null || input.size()==0)
+		{
+			return 0;
+		}
 		double p = bayes.getPosterior(input);
 		System.out.println(p);
 		int res = addSampleFromPosterior(input, p);
