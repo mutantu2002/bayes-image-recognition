@@ -1,11 +1,11 @@
 package home.mutant.bayes;
 
+import home.mutant.deep.utils.MnistDatabase;
 import home.mutant.trainings.multithread.feature.FeatureCalculatorMultiThread;
 import home.mutant.trainings.multithread.feature.IndexImage;
 import home.mutant.trainings.multithread.feature.IndexMultiFeature;
 import home.mutant.trainings.multithread.templates.Featurable;
 import home.mutant.trainings.multithread.twopixels.Featurable2Pixels;
-import home.mutant.utils.MnistDatabase;
 
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ public class BayesNetworkMultiThreadTest
 	@Test
 	public void test() throws IOException
 	{
-		MnistDatabase.loadImages();
+		MnistDatabase.loadImagesBW();
 		featurable = new Featurable2Pixels();
 		FeatureCalculatorMultiThread calc = new FeatureCalculatorMultiThread(6, featurable);
 		

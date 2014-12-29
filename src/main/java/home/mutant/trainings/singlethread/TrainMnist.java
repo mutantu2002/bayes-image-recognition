@@ -2,7 +2,7 @@ package home.mutant.trainings.singlethread;
 
 import home.mutant.bayes.NaiveBayes;
 import home.mutant.deep.ui.Image;
-import home.mutant.utils.MnistDatabase;
+import home.mutant.deep.utils.MnistDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +21,7 @@ public abstract class TrainMnist
 			bayes.add(new NaiveBayes(150,10000));
 		}
 
-		MnistDatabase.loadImages();
+		MnistDatabase.loadImagesBW();
 		for (int index = 0; index<60000; index++)
 		{
 			List<Integer> features = getFeatures(MnistDatabase.trainImages.get(index));

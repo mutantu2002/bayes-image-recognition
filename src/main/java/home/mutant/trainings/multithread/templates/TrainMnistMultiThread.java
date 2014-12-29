@@ -2,7 +2,7 @@ package home.mutant.trainings.multithread.templates;
 
 import home.mutant.bayes.NaiveBayes;
 import home.mutant.deep.ui.Image;
-import home.mutant.utils.MnistDatabase;
+import home.mutant.deep.utils.MnistDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public abstract class TrainMnistMultiThread
 	
 	public void train() throws Exception
 	{
-		MnistDatabase.loadImages();
+		MnistDatabase.loadImagesBW();
 		for (int i=0;i<10;i++)
 		{
 			bayes.add(new NaiveBayes(20,10000));

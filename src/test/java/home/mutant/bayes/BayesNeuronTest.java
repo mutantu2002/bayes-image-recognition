@@ -2,9 +2,9 @@ package home.mutant.bayes;
 
 import home.mutant.deep.ui.Image;
 import home.mutant.deep.ui.ResultFrame;
+import home.mutant.deep.utils.MnistDatabase;
 import home.mutant.trainings.multithread.fixedshapes.FeaturableFixedShapes;
 import home.mutant.trainings.multithread.templates.Featurable;
-import home.mutant.utils.MnistDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class BayesNeuronTest
 	@Test
 	public void testNoPositive() throws Exception
 	{
-		MnistDatabase.loadImages();
+		MnistDatabase.loadImagesBW();
 		featurable = new FeaturableFixedShapes();
 		List<BayesNeuronAddPositiveIfTriggered> listBayes = new ArrayList<BayesNeuronAddPositiveIfTriggered>();
 
@@ -81,7 +81,7 @@ public class BayesNeuronTest
 	}
 	public void testImageInputasOutput() throws Exception
 	{
-		MnistDatabase.loadImages();
+		MnistDatabase.loadImagesBW();
 		featurable = new FeaturableFixedShapes();
 		List<BayesNeuronAddPositiveIfTriggered> listBayes = new ArrayList<BayesNeuronAddPositiveIfTriggered>();
 		for(int i=0;i<10;i++)
