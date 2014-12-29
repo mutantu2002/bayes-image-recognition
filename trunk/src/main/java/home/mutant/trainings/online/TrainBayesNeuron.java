@@ -3,7 +3,7 @@ package home.mutant.trainings.online;
 import home.mutant.bayes.BayesNeuron;
 import home.mutant.bayes.BayesNeuronAddPositiveIfTriggered;
 import home.mutant.deep.ui.Image;
-import home.mutant.utils.MnistDatabase;
+import home.mutant.deep.utils.MnistDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class TrainBayesNeuron
 	public void train() throws Exception
 	{
 		BayesNeuron b = new BayesNeuronAddPositiveIfTriggered(28*28);
-		MnistDatabase.loadImages();
+		MnistDatabase.loadImagesBW();
 		for (int index = 0; index<60000; index++)
 		{
 			int currentBayesIndex = MnistDatabase.trainLabels.get(index);
