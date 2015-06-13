@@ -1,0 +1,1 @@
+Use some feature of images to build statistics about a class of images - say the letter A - and use Bayes rule to perform recognition
